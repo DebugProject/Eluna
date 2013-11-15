@@ -100,16 +100,16 @@
 %apply unsigned long int		{ uint32 };
 %apply unsigned long long int	{ uint64 };
 
-// Fix INOUT
 /*
 %apply int* OUTPUT {int *result}; // int *result is output
 %apply int* INPUT {int *x1, int *y1}; // int *x1 and int *y1 are input
 %apply int* INOUT {int *sx, int *sy}; // int *sx and int *sy are input and output
 */
-/*%apply float& OUTPUT { float &x };
+// Fix GetPosition()
+%apply float& OUTPUT { float &x };
 %apply float& OUTPUT { float &y };
 %apply float& OUTPUT { float &z };
-%apply float& OUTPUT { float &o };*/
+%apply float& OUTPUT { float &o };
 
 // %import DBCStructure.i
 
