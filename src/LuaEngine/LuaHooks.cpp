@@ -13,11 +13,11 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_LOOT_ITEM].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_LOOT_ITEM);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushItem(sEluna->LuaState, item);
-            sEluna->PushUnsigned(sEluna->LuaState, count);
-            sEluna->PushULong(sEluna->LuaState, guid);
+            sEluna->PushValue(PLAYER_EVENT_ON_LOOT_ITEM);
+            sEluna->PushValue(player);
+            sEluna->PushValue(item);
+            sEluna->PushValue(count);
+            sEluna->PushValue(guid);
             sEluna->ExecuteCall(5, 0);
         }
     }
@@ -27,8 +27,8 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_FIRST_LOGIN].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_FIRST_LOGIN);
-            sEluna->PushUnit(sEluna->LuaState, player);
+            sEluna->PushValue(PLAYER_EVENT_ON_FIRST_LOGIN);
+            sEluna->PushValue(player);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -38,8 +38,8 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_REPOP].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_REPOP);
-            sEluna->PushUnit(sEluna->LuaState, player);
+            sEluna->PushValue(PLAYER_EVENT_ON_REPOP);
+            sEluna->PushValue(player);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -49,8 +49,8 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_RESURRECT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_RESURRECT);
-            sEluna->PushUnit(sEluna->LuaState, player);
+            sEluna->PushValue(PLAYER_EVENT_ON_RESURRECT);
+            sEluna->PushValue(player);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -60,11 +60,11 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_EQUIP].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_EQUIP);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushItem(sEluna->LuaState, item);
-            sEluna->PushUnsigned(sEluna->LuaState, bag);
-            sEluna->PushUnsigned(sEluna->LuaState, slot);
+            sEluna->PushValue(PLAYER_EVENT_ON_EQUIP);
+            sEluna->PushValue(player);
+            sEluna->PushValue(item);
+            sEluna->PushValue(bag);
+            sEluna->PushValue(slot);
             sEluna->ExecuteCall(5, 0);
         }
     }
@@ -75,9 +75,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_CAN_USE_ITEM].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_CAN_USE_ITEM);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, itemEntry);
+            sEluna->PushValue(PLAYER_EVENT_ON_CAN_USE_ITEM);
+            sEluna->PushValue(player);
+            sEluna->PushValue(itemEntry);
             if (sEluna->ExecuteCall(3, 1))
             {
                 lua_State* L = sEluna->LuaState;
@@ -107,15 +107,15 @@ public:
             if (bind)
             {
                 sEluna->BeginCall(bind);
-                sEluna->PushUnsigned(sEluna->LuaState, GOSSIP_EVENT_ON_SELECT);
-                sEluna->PushUnit(sEluna->LuaState, player);
-                sEluna->PushItem(sEluna->LuaState, item);
-                sEluna->PushUnsigned(sEluna->LuaState, sender);
-                sEluna->PushUnsigned(sEluna->LuaState, action);
+                sEluna->PushValue(GOSSIP_EVENT_ON_SELECT);
+                sEluna->PushValue(player);
+                sEluna->PushValue(item);
+                sEluna->PushValue(sender);
+                sEluna->PushValue(action);
                 if (code.empty())
                     lua_pushnil(sEluna->LuaState);
                 else
-                    sEluna->PushString(sEluna->LuaState, code.c_str());
+                    sEluna->PushValue(code.c_str());
                 sEluna->ExecuteCall(6, 0);
             }
         }
@@ -128,16 +128,16 @@ public:
             if (bind)
             {
                 sEluna->BeginCall(bind);
-                sEluna->PushUnsigned(sEluna->LuaState, GOSSIP_EVENT_ON_SELECT);
-                sEluna->PushUnit(sEluna->LuaState, player); // receiver
-                sEluna->PushUnit(sEluna->LuaState, player); // sender, just not to mess up the amount of args.
-                sEluna->PushUnsigned(sEluna->LuaState, sender);
-                sEluna->PushUnsigned(sEluna->LuaState, action);
+                sEluna->PushValue(GOSSIP_EVENT_ON_SELECT);
+                sEluna->PushValue(player); // receiver
+                sEluna->PushValue(player); // sender, just not to mess up the amount of args.
+                sEluna->PushValue(sender);
+                sEluna->PushValue(action);
                 if (code.empty())
                     lua_pushnil(sEluna->LuaState);
                 else
-                    sEluna->PushString(sEluna->LuaState, code.c_str());
-                sEluna->PushUnsigned(sEluna->LuaState, menuId);
+                    sEluna->PushValue(code.c_str());
+                sEluna->PushValue(menuId);
                 sEluna->ExecuteCall(7, 0);
             }
         }
@@ -149,11 +149,11 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_CHAT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_CHAT);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushString(sEluna->LuaState, msg.c_str());
-            sEluna->PushUnsigned(sEluna->LuaState, type);
-            sEluna->PushUnsigned(sEluna->LuaState, lang);
+            sEluna->PushValue(PLAYER_EVENT_ON_CHAT);
+            sEluna->PushValue(player);
+            sEluna->PushValue(msg.c_str());
+            sEluna->PushValue(type);
+            sEluna->PushValue(lang);
             if (sEluna->ExecuteCall(5, 1))
             {
                 lua_State* L = sEluna->LuaState;
@@ -171,12 +171,12 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_GROUP_CHAT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_GROUP_CHAT);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushString(sEluna->LuaState, msg.c_str());
-            sEluna->PushUnsigned(sEluna->LuaState, type);
-            sEluna->PushUnsigned(sEluna->LuaState, lang);
-            sEluna->PushGroup(sEluna->LuaState, group);
+            sEluna->PushValue(PLAYER_EVENT_ON_GROUP_CHAT);
+            sEluna->PushValue(player);
+            sEluna->PushValue(msg.c_str());
+            sEluna->PushValue(type);
+            sEluna->PushValue(lang);
+            sEluna->PushValue(group);
             if (sEluna->ExecuteCall(6, 1))
             {
                 lua_State* L = sEluna->LuaState;
@@ -194,12 +194,12 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_GUILD_CHAT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_GUILD_CHAT);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushString(sEluna->LuaState, msg.c_str());
-            sEluna->PushUnsigned(sEluna->LuaState, type);
-            sEluna->PushUnsigned(sEluna->LuaState, lang);
-            sEluna->PushGuild(sEluna->LuaState, guild);
+            sEluna->PushValue(PLAYER_EVENT_ON_GUILD_CHAT);
+            sEluna->PushValue(player);
+            sEluna->PushValue(msg.c_str());
+            sEluna->PushValue(type);
+            sEluna->PushValue(lang);
+            sEluna->PushValue(guild);
             if (sEluna->ExecuteCall(6, 1))
             {
                 lua_State* L = sEluna->LuaState;
@@ -217,12 +217,12 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_CHANNEL_CHAT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_CHANNEL_CHAT);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushString(sEluna->LuaState, msg.c_str());
-            sEluna->PushUnsigned(sEluna->LuaState, type);
-            sEluna->PushUnsigned(sEluna->LuaState, lang);
-            sEluna->PushUnsigned(sEluna->LuaState, channel->GetChannelId());
+            sEluna->PushValue(PLAYER_EVENT_ON_CHANNEL_CHAT);
+            sEluna->PushValue(player);
+            sEluna->PushValue(msg.c_str());
+            sEluna->PushValue(type);
+            sEluna->PushValue(lang);
+            sEluna->PushValue(channel->GetChannelId());
             if (sEluna->ExecuteCall(6, 1))
             {
                 lua_State* L = sEluna->LuaState;
@@ -239,7 +239,7 @@ public:
             itr != sEluna->ServerEventBindings[ELUNA_EVENT_ON_RESTART].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, ELUNA_EVENT_ON_RESTART);
+            sEluna->PushValue(ELUNA_EVENT_ON_RESTART);
             sEluna->ExecuteCall(1, 0);
         }
     }
@@ -250,11 +250,11 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushUnsigned(sEluna->LuaState, ITEM_EVENT_ON_DUMMY_EFFECT);
-        sEluna->PushUnit(sEluna->LuaState, caster);
-        sEluna->PushUnsigned(sEluna->LuaState, spellId);
-        sEluna->PushInteger(sEluna->LuaState, effIndex);
-        sEluna->PushItem(sEluna->LuaState, target);
+        sEluna->PushValue(ITEM_EVENT_ON_DUMMY_EFFECT);
+        sEluna->PushValue(caster);
+        sEluna->PushValue(spellId);
+        sEluna->PushValue(effIndex);
+        sEluna->PushValue(target);
         sEluna->ExecuteCall(5, 0);
         return true;
     }
@@ -264,10 +264,10 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushUnsigned(sEluna->LuaState, ITEM_EVENT_ON_QUEST_ACCEPT);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushItem(sEluna->LuaState, item);
-        sEluna->PushQuest(sEluna->LuaState, quest);
+        sEluna->PushValue(ITEM_EVENT_ON_QUEST_ACCEPT);
+        sEluna->PushValue(player);
+        sEluna->PushValue(item);
+        sEluna->PushValue(quest);
         sEluna->ExecuteCall(4, 0);
         return true;
     }
@@ -281,25 +281,25 @@ public:
         {
             player->PlayerTalkClass->ClearMenus();
             sEluna->BeginCall(bind1);
-            sEluna->PushUnsigned(sEluna->LuaState, GOSSIP_EVENT_ON_HELLO);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushItem(sEluna->LuaState, item);
+            sEluna->PushValue(GOSSIP_EVENT_ON_HELLO);
+            sEluna->PushValue(player);
+            sEluna->PushValue(item);
             sEluna->ExecuteCall(3, 0);
         }
         if (bind2)
         {
             sEluna->BeginCall(bind2);
-            sEluna->PushUnsigned(sEluna->LuaState, ITEM_EVENT_ON_USE);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushItem(sEluna->LuaState, item);
+            sEluna->PushValue(ITEM_EVENT_ON_USE);
+            sEluna->PushValue(player);
+            sEluna->PushValue(item);
             if (GameObject* target = targets.GetGOTarget())
-                sEluna->PushGO(sEluna->LuaState, target);
+                sEluna->PushValue(target);
             else if (Item* target = targets.GetItemTarget())
-                sEluna->PushItem(sEluna->LuaState, target);
+                sEluna->PushValue(target);
             else if (Unit* target = targets.GetUnitTarget())
-                sEluna->PushUnit(sEluna->LuaState, target);
+                sEluna->PushValue(target);
             else
-                lua_pushnil(sEluna->LuaState);
+                sEluna->PushValue();
             sEluna->ExecuteCall(4, 0);
         }
         player->SendEquipError((InventoryResult)83, item, NULL);
@@ -311,9 +311,9 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushUnsigned(sEluna->LuaState, ITEM_EVENT_ON_EXPIRE);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushUnsigned(sEluna->LuaState, proto->ItemId);
+        sEluna->PushValue(ITEM_EVENT_ON_EXPIRE);
+        sEluna->PushValue(player);
+        sEluna->PushValue(proto->ItemId);
         sEluna->ExecuteCall(3, 0);
         return true;
     }
@@ -324,11 +324,11 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, CREATURE_EVENT_ON_DUMMY_EFFECT);
-        sEluna->PushUnit(sEluna->LuaState, caster);
-        sEluna->PushUnsigned(sEluna->LuaState, spellId);
-        sEluna->PushInteger(sEluna->LuaState, effIndex);
-        sEluna->PushUnit(sEluna->LuaState, target);
+        sEluna->PushValue(CREATURE_EVENT_ON_DUMMY_EFFECT);
+        sEluna->PushValue(caster);
+        sEluna->PushValue(spellId);
+        sEluna->PushValue(effIndex);
+        sEluna->PushValue(target);
         sEluna->ExecuteCall(5, 0);
         return true;
     }
@@ -339,9 +339,9 @@ public:
             return false;
         player->PlayerTalkClass->ClearMenus();
         sEluna->BeginCall(bind);
-        sEluna->PushUnsigned(sEluna->LuaState, GOSSIP_EVENT_ON_HELLO);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushUnit(sEluna->LuaState, creature);
+        sEluna->PushValue(GOSSIP_EVENT_ON_HELLO);
+        sEluna->PushValue(player);
+        sEluna->PushValue(creature);
         sEluna->ExecuteCall(3, 0);
         return true;
     }
@@ -352,11 +352,11 @@ public:
             return false;
         player->PlayerTalkClass->ClearMenus();
         sEluna->BeginCall(bind);
-        sEluna->PushUnsigned(sEluna->LuaState, GOSSIP_EVENT_ON_SELECT);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushUnit(sEluna->LuaState, creature);
-        sEluna->PushUnsigned(sEluna->LuaState, sender);
-        sEluna->PushUnsigned(sEluna->LuaState, action);
+        sEluna->PushValue(GOSSIP_EVENT_ON_SELECT);
+        sEluna->PushValue(player);
+        sEluna->PushValue(creature);
+        sEluna->PushValue(sender);
+        sEluna->PushValue(action);
         sEluna->ExecuteCall(5, 0);
         return true;
     }
@@ -367,12 +367,12 @@ public:
             return false;
         player->PlayerTalkClass->ClearMenus();
         sEluna->BeginCall(bind);
-        sEluna->PushUnsigned(sEluna->LuaState, GOSSIP_EVENT_ON_SELECT);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushUnit(sEluna->LuaState, creature);
-        sEluna->PushUnsigned(sEluna->LuaState, sender);
-        sEluna->PushUnsigned(sEluna->LuaState, action);
-        sEluna->PushString(sEluna->LuaState, code);
+        sEluna->PushValue(GOSSIP_EVENT_ON_SELECT);
+        sEluna->PushValue(player);
+        sEluna->PushValue(creature);
+        sEluna->PushValue(sender);
+        sEluna->PushValue(action);
+        sEluna->PushValue(code);
         sEluna->ExecuteCall(6, 0);
         return true;
     }
@@ -382,10 +382,10 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, CREATURE_EVENT_ON_QUEST_ACCEPT);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushUnit(sEluna->LuaState, creature);
-        sEluna->PushQuest(sEluna->LuaState, quest);
+        sEluna->PushValue(CREATURE_EVENT_ON_QUEST_ACCEPT);
+        sEluna->PushValue(player);
+        sEluna->PushValue(creature);
+        sEluna->PushValue(quest);
         sEluna->ExecuteCall(4, 0);
         return true;
     }
@@ -395,10 +395,10 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, CREATURE_EVENT_ON_QUEST_SELECT);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushUnit(sEluna->LuaState, creature);
-        sEluna->PushQuest(sEluna->LuaState, quest);
+        sEluna->PushValue(CREATURE_EVENT_ON_QUEST_SELECT);
+        sEluna->PushValue(player);
+        sEluna->PushValue(creature);
+        sEluna->PushValue(quest);
         sEluna->ExecuteCall(4, 0);
         return true;
     }
@@ -408,10 +408,10 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, CREATURE_EVENT_ON_QUEST_COMPLETE);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushUnit(sEluna->LuaState, creature);
-        sEluna->PushQuest(sEluna->LuaState, quest);
+        sEluna->PushValue(CREATURE_EVENT_ON_QUEST_COMPLETE);
+        sEluna->PushValue(player);
+        sEluna->PushValue(creature);
+        sEluna->PushValue(quest);
         sEluna->ExecuteCall(4, 0);
         return true;
     }
@@ -421,11 +421,11 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, CREATURE_EVENT_ON_QUEST_REWARD);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushUnit(sEluna->LuaState, creature);
-        sEluna->PushQuest(sEluna->LuaState, quest);
-        sEluna->PushUnsigned(sEluna->LuaState, opt);
+        sEluna->PushValue(CREATURE_EVENT_ON_QUEST_REWARD);
+        sEluna->PushValue(player);
+        sEluna->PushValue(creature);
+        sEluna->PushValue(quest);
+        sEluna->PushValue(opt);
         sEluna->ExecuteCall(5, 0);
         return true;
     }
@@ -435,9 +435,9 @@ public:
         if (!bind)
             return 0;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, CREATURE_EVENT_ON_DIALOG_STATUS);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushUnit(sEluna->LuaState, creature);
+        sEluna->PushValue(CREATURE_EVENT_ON_DIALOG_STATUS);
+        sEluna->PushValue(player);
+        sEluna->PushValue(creature);
         sEluna->ExecuteCall(3, 0);
         return 100;
     }
@@ -448,11 +448,11 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, GAMEOBJECT_EVENT_ON_DUMMY_EFFECT);
-        sEluna->PushUnit(sEluna->LuaState, caster);
-        sEluna->PushUnsigned(sEluna->LuaState, spellId);
-        sEluna->PushInteger(sEluna->LuaState, effIndex);
-        sEluna->PushGO(sEluna->LuaState, target);
+        sEluna->PushValue(GAMEOBJECT_EVENT_ON_DUMMY_EFFECT);
+        sEluna->PushValue(caster);
+        sEluna->PushValue(spellId);
+        sEluna->PushValue(effIndex);
+        sEluna->PushValue(target);
         sEluna->ExecuteCall(5, 0);
         return true;
     }
@@ -463,9 +463,9 @@ public:
             return false;
         player->PlayerTalkClass->ClearMenus();
         sEluna->BeginCall(bind);
-        sEluna->PushUnsigned(sEluna->LuaState, GOSSIP_EVENT_ON_HELLO);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushGO(sEluna->LuaState, go);
+        sEluna->PushValue(GOSSIP_EVENT_ON_HELLO);
+        sEluna->PushValue(player);
+        sEluna->PushValue(go);
         sEluna->ExecuteCall(3, 0);
         return true;
     }
@@ -476,11 +476,11 @@ public:
             return false;
         player->PlayerTalkClass->ClearMenus();
         sEluna->BeginCall(bind);
-        sEluna->PushUnsigned(sEluna->LuaState, GOSSIP_EVENT_ON_SELECT);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushGO(sEluna->LuaState, go);
-        sEluna->PushUnsigned(sEluna->LuaState, sender);
-        sEluna->PushUnsigned(sEluna->LuaState, action);
+        sEluna->PushValue(GOSSIP_EVENT_ON_SELECT);
+        sEluna->PushValue(player);
+        sEluna->PushValue(go);
+        sEluna->PushValue(sender);
+        sEluna->PushValue(action);
         sEluna->ExecuteCall(5, 0);
         return true;
     }
@@ -491,12 +491,12 @@ public:
             return false;
         player->PlayerTalkClass->ClearMenus();
         sEluna->BeginCall(bind);
-        sEluna->PushUnsigned(sEluna->LuaState, GOSSIP_EVENT_ON_SELECT);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushGO(sEluna->LuaState, go);
-        sEluna->PushUnsigned(sEluna->LuaState, sender);
-        sEluna->PushUnsigned(sEluna->LuaState, action);
-        sEluna->PushString(sEluna->LuaState, code);
+        sEluna->PushValue(GOSSIP_EVENT_ON_SELECT);
+        sEluna->PushValue(player);
+        sEluna->PushValue(go);
+        sEluna->PushValue(sender);
+        sEluna->PushValue(action);
+        sEluna->PushValue(code);
         sEluna->ExecuteCall(6, 0);
         return true;
     }
@@ -506,10 +506,10 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, GAMEOBJECT_EVENT_ON_QUEST_ACCEPT);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushGO(sEluna->LuaState, go);
-        sEluna->PushQuest(sEluna->LuaState, quest);
+        sEluna->PushValue(GAMEOBJECT_EVENT_ON_QUEST_ACCEPT);
+        sEluna->PushValue(player);
+        sEluna->PushValue(go);
+        sEluna->PushValue(quest);
         sEluna->ExecuteCall(4, 0);
         return true;
     }
@@ -519,11 +519,11 @@ public:
         if (!bind)
             return false;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, GAMEOBJECT_EVENT_ON_QUEST_REWARD);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushGO(sEluna->LuaState, go);
-        sEluna->PushQuest(sEluna->LuaState, quest);
-        sEluna->PushUnsigned(sEluna->LuaState, opt);
+        sEluna->PushValue(GAMEOBJECT_EVENT_ON_QUEST_REWARD);
+        sEluna->PushValue(player);
+        sEluna->PushValue(go);
+        sEluna->PushValue(quest);
+        sEluna->PushValue(opt);
         sEluna->ExecuteCall(5, 0);
         return true;
     }
@@ -533,9 +533,9 @@ public:
         if (!bind)
             return 0;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, GAMEOBJECT_EVENT_ON_DIALOG_STATUS);
-        sEluna->PushUnit(sEluna->LuaState, player);
-        sEluna->PushGO(sEluna->LuaState, go);
+        sEluna->PushValue(GAMEOBJECT_EVENT_ON_DIALOG_STATUS);
+        sEluna->PushValue(player);
+        sEluna->PushValue(go);
         sEluna->ExecuteCall(3, 0);
         return 100;
     }
@@ -545,9 +545,9 @@ public:
         if (!bind)
             return;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, GAMEOBJECT_EVENT_ON_DESTROYED);
-        sEluna->PushGO(sEluna->LuaState, go);
-        sEluna->PushUnit(sEluna->LuaState, player);
+        sEluna->PushValue(GAMEOBJECT_EVENT_ON_DESTROYED);
+        sEluna->PushValue(go);
+        sEluna->PushValue(player);
         sEluna->ExecuteCall(3, 0);
     }
     void OnDamaged(GameObject* go, Player* player)
@@ -556,9 +556,9 @@ public:
         if (!bind)
             return;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, GAMEOBJECT_EVENT_ON_DAMAGED);
-        sEluna->PushGO(sEluna->LuaState, go);
-        sEluna->PushUnit(sEluna->LuaState, player);
+        sEluna->PushValue(GAMEOBJECT_EVENT_ON_DAMAGED);
+        sEluna->PushValue(go);
+        sEluna->PushValue(player);
         sEluna->ExecuteCall(3, 0);
     }
     void OnLootStateChanged(GameObject* go, uint32 state, Unit* unit)
@@ -567,10 +567,10 @@ public:
         if (!bind)
             return;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, GAMEOBJECT_EVENT_ON_LOOT_STATE_CHANGE);
-        sEluna->PushGO(sEluna->LuaState, go);
-        sEluna->PushUnsigned(sEluna->LuaState, state);
-        sEluna->PushUnit(sEluna->LuaState, unit);
+        sEluna->PushValue(GAMEOBJECT_EVENT_ON_LOOT_STATE_CHANGE);
+        sEluna->PushValue(go);
+        sEluna->PushValue(state);
+        sEluna->PushValue(unit);
         sEluna->ExecuteCall(4, 0);
     }
     void OnGameObjectStateChanged(GameObject* go, uint32 state)
@@ -579,9 +579,9 @@ public:
         if (!bind)
             return;
         sEluna->BeginCall(bind);
-        sEluna->PushInteger(sEluna->LuaState, GAMEOBJECT_EVENT_ON_GO_STATE_CHANGED);
-        sEluna->PushGO(sEluna->LuaState, go);
-        sEluna->PushUnsigned(sEluna->LuaState, state);
+        sEluna->PushValue(GAMEOBJECT_EVENT_ON_GO_STATE_CHANGED);
+        sEluna->PushValue(go);
+        sEluna->PushValue(state);
         sEluna->ExecuteCall(3, 0);
     }
     // areatrigger
@@ -591,9 +591,9 @@ public:
             itr != sEluna->ServerEventBindings[TRIGGER_EVENT_ON_TRIGGER].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, TRIGGER_EVENT_ON_TRIGGER);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, trigger->id);
+            sEluna->PushValue(TRIGGER_EVENT_ON_TRIGGER);
+            sEluna->PushValue(player);
+            sEluna->PushValue(trigger->id);
             sEluna->ExecuteCall(3, 0);
         }
         return false;
@@ -605,10 +605,10 @@ public:
             itr != sEluna->ServerEventBindings[WEATHER_EVENT_ON_CHANGE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, WEATHER_EVENT_ON_CHANGE);
-            sEluna->PushUnsigned(sEluna->LuaState, (weather->GetZone()));
-            sEluna->PushInteger(sEluna->LuaState, state);
-            sEluna->PushFloat(sEluna->LuaState, grade);
+            sEluna->PushValue(WEATHER_EVENT_ON_CHANGE);
+            sEluna->PushValue((weather->GetZone()));
+            sEluna->PushValue(state);
+            sEluna->PushValue(grade);
             sEluna->ExecuteCall(4, 0);
         }
     }
@@ -821,9 +821,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_ENTER_COMBAT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_ENTER_COMBAT);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnit(sEluna->LuaState, enemy);
+            sEluna->PushValue(PLAYER_EVENT_ON_ENTER_COMBAT);
+            sEluna->PushValue(player);
+            sEluna->PushValue(enemy);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -833,8 +833,8 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_LEAVE_COMBAT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_LEAVE_COMBAT);
-            sEluna->PushUnit(sEluna->LuaState, player);
+            sEluna->PushValue(PLAYER_EVENT_ON_LEAVE_COMBAT);
+            sEluna->PushValue(player);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -844,9 +844,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_KILL_PLAYER].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_KILL_PLAYER);
-            sEluna->PushUnit(sEluna->LuaState, killer);
-            sEluna->PushUnit(sEluna->LuaState, killed);
+            sEluna->PushValue(PLAYER_EVENT_ON_KILL_PLAYER);
+            sEluna->PushValue(killer);
+            sEluna->PushValue(killed);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -856,9 +856,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_KILL_CREATURE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_KILL_CREATURE);
-            sEluna->PushUnit(sEluna->LuaState, killer);
-            sEluna->PushUnit(sEluna->LuaState, killed);
+            sEluna->PushValue(PLAYER_EVENT_ON_KILL_CREATURE);
+            sEluna->PushValue(killer);
+            sEluna->PushValue(killed);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -868,9 +868,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_KILLED_BY_CREATURE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_KILLED_BY_CREATURE);
-            sEluna->PushUnit(sEluna->LuaState, killer);
-            sEluna->PushUnit(sEluna->LuaState, killed);
+            sEluna->PushValue(PLAYER_EVENT_ON_KILLED_BY_CREATURE);
+            sEluna->PushValue(killer);
+            sEluna->PushValue(killed);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -880,9 +880,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_LEVEL_CHANGE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_LEVEL_CHANGE);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, oldLevel);
+            sEluna->PushValue(PLAYER_EVENT_ON_LEVEL_CHANGE);
+            sEluna->PushValue(player);
+            sEluna->PushValue(oldLevel);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -892,9 +892,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_TALENTS_CHANGE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_TALENTS_CHANGE);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, newPoints);
+            sEluna->PushValue(PLAYER_EVENT_ON_TALENTS_CHANGE);
+            sEluna->PushValue(player);
+            sEluna->PushValue(newPoints);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -904,9 +904,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_TALENTS_RESET].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_TALENTS_RESET);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushBoolean(sEluna->LuaState, noCost);
+            sEluna->PushValue(PLAYER_EVENT_ON_TALENTS_RESET);
+            sEluna->PushValue(player);
+            sEluna->PushValue(noCost);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -916,9 +916,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_MONEY_CHANGE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_MONEY_CHANGE);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushInteger(sEluna->LuaState, amount);
+            sEluna->PushValue(PLAYER_EVENT_ON_MONEY_CHANGE);
+            sEluna->PushValue(player);
+            sEluna->PushValue(amount);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -928,10 +928,10 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_GIVE_XP].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_GIVE_XP);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, amount);
-            sEluna->PushUnit(sEluna->LuaState, victim);
+            sEluna->PushValue(PLAYER_EVENT_ON_GIVE_XP);
+            sEluna->PushValue(player);
+            sEluna->PushValue(amount);
+            sEluna->PushValue(victim);
             sEluna->ExecuteCall(4, 0);
         }
     }
@@ -941,11 +941,11 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_REPUTATION_CHANGE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_REPUTATION_CHANGE);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, factionID);
-            sEluna->PushInteger(sEluna->LuaState, standing);
-            sEluna->PushBoolean(sEluna->LuaState, incremental);
+            sEluna->PushValue(PLAYER_EVENT_ON_REPUTATION_CHANGE);
+            sEluna->PushValue(player);
+            sEluna->PushValue(factionID);
+            sEluna->PushValue(standing);
+            sEluna->PushValue(incremental);
             sEluna->ExecuteCall(5, 0);
         }
     }
@@ -955,9 +955,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_DUEL_REQUEST].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_DUEL_REQUEST);
-            sEluna->PushUnit(sEluna->LuaState, target);
-            sEluna->PushUnit(sEluna->LuaState, challenger);
+            sEluna->PushValue(PLAYER_EVENT_ON_DUEL_REQUEST);
+            sEluna->PushValue(target);
+            sEluna->PushValue(challenger);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -967,9 +967,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_DUEL_START].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_DUEL_START);
-            sEluna->PushUnit(sEluna->LuaState, player1);
-            sEluna->PushUnit(sEluna->LuaState, player2);
+            sEluna->PushValue(PLAYER_EVENT_ON_DUEL_START);
+            sEluna->PushValue(player1);
+            sEluna->PushValue(player2);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -979,10 +979,10 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_DUEL_END].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_DUEL_END);
-            sEluna->PushUnit(sEluna->LuaState, winner);
-            sEluna->PushUnit(sEluna->LuaState, loser);
-            sEluna->PushInteger(sEluna->LuaState, type);
+            sEluna->PushValue(PLAYER_EVENT_ON_DUEL_END);
+            sEluna->PushValue(winner);
+            sEluna->PushValue(loser);
+            sEluna->PushValue(type);
             sEluna->ExecuteCall(4, 0);
         }
     }
@@ -996,12 +996,12 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_WHISPER].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_WHISPER);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushString(sEluna->LuaState, msg.c_str());
-            sEluna->PushUnsigned(sEluna->LuaState, type);
-            sEluna->PushUnsigned(sEluna->LuaState, lang);
-            sEluna->PushUnit(sEluna->LuaState, receiver);
+            sEluna->PushValue(PLAYER_EVENT_ON_WHISPER);
+            sEluna->PushValue(player);
+            sEluna->PushValue(msg.c_str());
+            sEluna->PushValue(type);
+            sEluna->PushValue(lang);
+            sEluna->PushValue(receiver);
             sEluna->ExecuteCall(6, 0);
         }
     }
@@ -1023,9 +1023,9 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_EMOTE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_EMOTE);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, emote);
+            sEluna->PushValue(PLAYER_EVENT_ON_EMOTE);
+            sEluna->PushValue(player);
+            sEluna->PushValue(emote);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -1035,11 +1035,11 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_TEXT_EMOTE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_TEXT_EMOTE);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, textEmote);
-            sEluna->PushUnsigned(sEluna->LuaState, emoteNum);
-            sEluna->PushULong(sEluna->LuaState, guid);
+            sEluna->PushValue(PLAYER_EVENT_ON_TEXT_EMOTE);
+            sEluna->PushValue(player);
+            sEluna->PushValue(textEmote);
+            sEluna->PushValue(emoteNum);
+            sEluna->PushValue(guid);
             sEluna->ExecuteCall(5, 0);
         }
     }
@@ -1049,10 +1049,10 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_SPELL_CAST].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_SPELL_CAST);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushSpell(sEluna->LuaState, spell);
-            sEluna->PushBoolean(sEluna->LuaState, skipCheck);
+            sEluna->PushValue(PLAYER_EVENT_ON_SPELL_CAST);
+            sEluna->PushValue(player);
+            sEluna->PushValue(spell);
+            sEluna->PushValue(skipCheck);
             sEluna->ExecuteCall(4, 0);
         }
     }
@@ -1062,8 +1062,8 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_LOGIN].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_LOGIN);
-            sEluna->PushUnit(sEluna->LuaState, player);
+            sEluna->PushValue(PLAYER_EVENT_ON_LOGIN);
+            sEluna->PushValue(player);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -1073,8 +1073,8 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_LOGOUT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_LOGOUT);
-            sEluna->PushUnit(sEluna->LuaState, player);
+            sEluna->PushValue(PLAYER_EVENT_ON_LOGOUT);
+            sEluna->PushValue(player);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -1084,8 +1084,8 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_CHARACTER_CREATE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_CHARACTER_CREATE);
-            sEluna->PushUnit(sEluna->LuaState, player);
+            sEluna->PushValue(PLAYER_EVENT_ON_CHARACTER_CREATE);
+            sEluna->PushValue(player);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -1095,8 +1095,8 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_CHARACTER_DELETE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_CHARACTER_DELETE);
-            sEluna->PushULong(sEluna->LuaState, guid);
+            sEluna->PushValue(PLAYER_EVENT_ON_CHARACTER_DELETE);
+            sEluna->PushValue(guid);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -1106,8 +1106,8 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_SAVE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_SAVE);
-            sEluna->PushUnit(sEluna->LuaState, player);
+            sEluna->PushValue(PLAYER_EVENT_ON_SAVE);
+            sEluna->PushValue(player);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -1117,11 +1117,11 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_BIND_TO_INSTANCE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_BIND_TO_INSTANCE);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushInteger(sEluna->LuaState, difficulty);
-            sEluna->PushUnsigned(sEluna->LuaState, mapid);
-            sEluna->PushBoolean(sEluna->LuaState, permanent);
+            sEluna->PushValue(PLAYER_EVENT_ON_BIND_TO_INSTANCE);
+            sEluna->PushValue(player);
+            sEluna->PushValue(difficulty);
+            sEluna->PushValue(mapid);
+            sEluna->PushValue(permanent);
             sEluna->ExecuteCall(5, 0);
         }
     }
@@ -1131,10 +1131,10 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_UPDATE_ZONE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_UPDATE_ZONE);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, newZone);
-            sEluna->PushUnsigned(sEluna->LuaState, newArea);
+            sEluna->PushValue(PLAYER_EVENT_ON_UPDATE_ZONE);
+            sEluna->PushValue(player);
+            sEluna->PushValue(newZone);
+            sEluna->PushValue(newArea);
             sEluna->ExecuteCall(4, 0);
         }
     }
@@ -1144,8 +1144,8 @@ public:
             itr != sEluna->ServerEventBindings[PLAYER_EVENT_ON_MAP_CHANGE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, PLAYER_EVENT_ON_MAP_CHANGE);
-            sEluna->PushUnit(sEluna->LuaState, player);
+            sEluna->PushValue(PLAYER_EVENT_ON_MAP_CHANGE);
+            sEluna->PushValue(player);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -1160,10 +1160,10 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_ADD_MEMBER].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_ADD_MEMBER);
-            sEluna->PushGuild(sEluna->LuaState, guild);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, plRank);
+            sEluna->PushValue(GUILD_EVENT_ON_ADD_MEMBER);
+            sEluna->PushValue(guild);
+            sEluna->PushValue(player);
+            sEluna->PushValue(plRank);
             sEluna->ExecuteCall(4, 0);
         }
     }
@@ -1173,11 +1173,11 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_REMOVE_MEMBER].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_REMOVE_MEMBER);
-            sEluna->PushGuild(sEluna->LuaState, guild);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushBoolean(sEluna->LuaState, isDisbanding);
-            sEluna->PushBoolean(sEluna->LuaState, isKicked);
+            sEluna->PushValue(GUILD_EVENT_ON_REMOVE_MEMBER);
+            sEluna->PushValue(guild);
+            sEluna->PushValue(player);
+            sEluna->PushValue(isDisbanding);
+            sEluna->PushValue(isKicked);
             sEluna->ExecuteCall(5, 0);
         }
     }
@@ -1187,9 +1187,9 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_MOTD_CHANGE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_MOTD_CHANGE);
-            sEluna->PushGuild(sEluna->LuaState, guild);
-            sEluna->PushString(sEluna->LuaState, newMotd.c_str());
+            sEluna->PushValue(GUILD_EVENT_ON_MOTD_CHANGE);
+            sEluna->PushValue(guild);
+            sEluna->PushValue(newMotd.c_str());
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -1199,9 +1199,9 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_INFO_CHANGE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_INFO_CHANGE);
-            sEluna->PushGuild(sEluna->LuaState, guild);
-            sEluna->PushString(sEluna->LuaState, newInfo.c_str());
+            sEluna->PushValue(GUILD_EVENT_ON_INFO_CHANGE);
+            sEluna->PushValue(guild);
+            sEluna->PushValue(newInfo.c_str());
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -1211,10 +1211,10 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_CREATE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_CREATE);
-            sEluna->PushGuild(sEluna->LuaState, guild);
-            sEluna->PushUnit(sEluna->LuaState, leader);
-            sEluna->PushString(sEluna->LuaState, name.c_str());
+            sEluna->PushValue(GUILD_EVENT_ON_CREATE);
+            sEluna->PushValue(guild);
+            sEluna->PushValue(leader);
+            sEluna->PushValue(name.c_str());
             sEluna->ExecuteCall(4, 0);
         }
     }
@@ -1224,8 +1224,8 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_DISBAND].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_DISBAND);
-            sEluna->PushGuild(sEluna->LuaState, guild);
+            sEluna->PushValue(GUILD_EVENT_ON_DISBAND);
+            sEluna->PushValue(guild);
             sEluna->ExecuteCall(2, 0);
         }
     }
@@ -1235,11 +1235,11 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_MONEY_WITHDRAW].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_MONEY_WITHDRAW);
-            sEluna->PushGuild(sEluna->LuaState, guild);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, amount);
-            sEluna->PushBoolean(sEluna->LuaState, isRepair);
+            sEluna->PushValue(GUILD_EVENT_ON_MONEY_WITHDRAW);
+            sEluna->PushValue(guild);
+            sEluna->PushValue(player);
+            sEluna->PushValue(amount);
+            sEluna->PushValue(isRepair);
             sEluna->ExecuteCall(5, 0);
         }
     }
@@ -1249,10 +1249,10 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_MONEY_DEPOSIT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_MONEY_DEPOSIT);
-            sEluna->PushGuild(sEluna->LuaState, guild);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushUnsigned(sEluna->LuaState, amount);
+            sEluna->PushValue(GUILD_EVENT_ON_MONEY_DEPOSIT);
+            sEluna->PushValue(guild);
+            sEluna->PushValue(player);
+            sEluna->PushValue(amount);
             sEluna->ExecuteCall(4, 0);
         }
     }
@@ -1263,16 +1263,16 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_ITEM_MOVE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_ITEM_MOVE);
-            sEluna->PushGuild(sEluna->LuaState, guild);
-            sEluna->PushUnit(sEluna->LuaState, player);
-            sEluna->PushItem(sEluna->LuaState, pItem);
-            sEluna->PushBoolean(sEluna->LuaState, isSrcBank);
-            sEluna->PushUnsigned(sEluna->LuaState, srcContainer);
-            sEluna->PushUnsigned(sEluna->LuaState, srcSlotId);
-            sEluna->PushBoolean(sEluna->LuaState, isDestBank);
-            sEluna->PushUnsigned(sEluna->LuaState, destContainer);
-            sEluna->PushUnsigned(sEluna->LuaState, destSlotId);
+            sEluna->PushValue(GUILD_EVENT_ON_ITEM_MOVE);
+            sEluna->PushValue(guild);
+            sEluna->PushValue(player);
+            sEluna->PushValue(pItem);
+            sEluna->PushValue(isSrcBank);
+            sEluna->PushValue(srcContainer);
+            sEluna->PushValue(srcSlotId);
+            sEluna->PushValue(isDestBank);
+            sEluna->PushValue(destContainer);
+            sEluna->PushValue(destSlotId);
             sEluna->ExecuteCall(10, 0);
         }
     }
@@ -1282,12 +1282,12 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_EVENT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_EVENT);
-            sEluna->PushGuild(sEluna->LuaState, guild);
-            sEluna->PushUnsigned(sEluna->LuaState, eventType);
-            sEluna->PushUnsigned(sEluna->LuaState, playerGuid1);
-            sEluna->PushUnsigned(sEluna->LuaState, playerGuid2);
-            sEluna->PushUnsigned(sEluna->LuaState, newRank);
+            sEluna->PushValue(GUILD_EVENT_ON_EVENT);
+            sEluna->PushValue(guild);
+            sEluna->PushValue(eventType);
+            sEluna->PushValue(playerGuid1);
+            sEluna->PushValue(playerGuid2);
+            sEluna->PushValue(newRank);
             sEluna->ExecuteCall(6, 0);
         }
     }
@@ -1297,14 +1297,14 @@ public:
             itr != sEluna->ServerEventBindings[GUILD_EVENT_ON_BANK_EVENT].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GUILD_EVENT_ON_BANK_EVENT);
-            sEluna->PushGuild(sEluna->LuaState, guild);
-            sEluna->PushUnsigned(sEluna->LuaState, eventType);
-            sEluna->PushUnsigned(sEluna->LuaState, tabId);
-            sEluna->PushUnsigned(sEluna->LuaState, playerGuid);
-            sEluna->PushUnsigned(sEluna->LuaState, itemOrMoney);
-            sEluna->PushUnsigned(sEluna->LuaState, itemStackCount);
-            sEluna->PushUnsigned(sEluna->LuaState, destTabId);
+            sEluna->PushValue(GUILD_EVENT_ON_BANK_EVENT);
+            sEluna->PushValue(guild);
+            sEluna->PushValue(eventType);
+            sEluna->PushValue(tabId);
+            sEluna->PushValue(playerGuid);
+            sEluna->PushValue(itemOrMoney);
+            sEluna->PushValue(itemStackCount);
+            sEluna->PushValue(destTabId);
             sEluna->ExecuteCall(8, 0);
         }
     }
@@ -1319,9 +1319,9 @@ public:
             itr != sEluna->ServerEventBindings[GROUP_EVENT_ON_MEMBER_ADD].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GROUP_EVENT_ON_MEMBER_ADD);
-            sEluna->PushGroup(sEluna->LuaState, group);
-            sEluna->PushULong(sEluna->LuaState, guid);
+            sEluna->PushValue(GROUP_EVENT_ON_MEMBER_ADD);
+            sEluna->PushValue(group);
+            sEluna->PushValue(guid);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -1331,9 +1331,9 @@ public:
             itr != sEluna->ServerEventBindings[GROUP_EVENT_ON_MEMBER_INVITE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GROUP_EVENT_ON_MEMBER_INVITE);
-            sEluna->PushGroup(sEluna->LuaState, group);
-            sEluna->PushULong(sEluna->LuaState, guid);
+            sEluna->PushValue(GROUP_EVENT_ON_MEMBER_INVITE);
+            sEluna->PushValue(group);
+            sEluna->PushValue(guid);
             sEluna->ExecuteCall(3, 0);
         }
     }
@@ -1343,12 +1343,12 @@ public:
             itr != sEluna->ServerEventBindings[GROUP_EVENT_ON_MEMBER_REMOVE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GROUP_EVENT_ON_MEMBER_REMOVE);
-            sEluna->PushGroup(sEluna->LuaState, group);
-            sEluna->PushULong(sEluna->LuaState, guid);
-            sEluna->PushInteger(sEluna->LuaState, method);
-            sEluna->PushULong(sEluna->LuaState, kicker);
-            sEluna->PushString(sEluna->LuaState, reason);
+            sEluna->PushValue(GROUP_EVENT_ON_MEMBER_REMOVE);
+            sEluna->PushValue(group);
+            sEluna->PushValue(guid);
+            sEluna->PushValue(method);
+            sEluna->PushValue(kicker);
+            sEluna->PushValue(reason);
             sEluna->ExecuteCall(6, 0);
         }
     }
@@ -1358,10 +1358,10 @@ public:
             itr != sEluna->ServerEventBindings[GROUP_EVENT_ON_LEADER_CHANGE].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GROUP_EVENT_ON_LEADER_CHANGE);
-            sEluna->PushGroup(sEluna->LuaState, group);
-            sEluna->PushULong(sEluna->LuaState, newLeaderGuid);
-            sEluna->PushULong(sEluna->LuaState, oldLeaderGuid);
+            sEluna->PushValue(GROUP_EVENT_ON_LEADER_CHANGE);
+            sEluna->PushValue(group);
+            sEluna->PushValue(newLeaderGuid);
+            sEluna->PushValue(oldLeaderGuid);
             sEluna->ExecuteCall(4, 0);
         }
     }
@@ -1371,8 +1371,8 @@ public:
             itr != sEluna->ServerEventBindings[GROUP_EVENT_ON_DISBAND].end(); ++itr)
         {
             sEluna->BeginCall((*itr));
-            sEluna->PushUnsigned(sEluna->LuaState, GROUP_EVENT_ON_DISBAND);
-            sEluna->PushGroup(sEluna->LuaState, group);
+            sEluna->PushValue(GROUP_EVENT_ON_DISBAND);
+            sEluna->PushValue(group);
             sEluna->ExecuteCall(2, 0);
         }
     }
