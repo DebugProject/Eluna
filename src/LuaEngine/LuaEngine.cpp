@@ -24,6 +24,7 @@ template<> const char* GetTName<Quest const>() { return "Quest *"; } // Needs te
 template<> const char* GetTName<Map>() { return "Map *"; }
 
 extern "C" extern int luaopen_Eluna(lua_State* L);
+extern void RegisterGlobals(lua_State* L);
 
 void Eluna::StartEluna(bool restart)
 {
@@ -66,6 +67,7 @@ void Eluna::StartEluna(bool restart)
     LoadDirectory("scripts", &loadedScripts);
     luaL_openlibs(LuaState);
     luaopen_Eluna(LuaState);
+    RegisterGlobals(LuaState);
 
     uint32 count = 0;
     char filename[200];
@@ -297,110 +299,6 @@ void Eluna::PushValue(const char* str)
     lua_pushstring(LuaState, str);
 }
 
-/*
-template<uint64> uint64 Eluna::CheckValue(int narg)
-{
-const char* c_str;
-if (!L)
-c_str = luaL_optstring(LuaState, narg, "0x0");
-else
-c_str = luaL_optstring(L, narg, "0x0");
-return strtoul(c_str, NULL, 0);
-}
-
-int64 Eluna::CheckValue(lua_State* L, int narg)
-{
-const char* c_str;
-if (!L)
-c_str = luaL_optstring(LuaState, narg, "0x0");
-else
-c_str = luaL_optstring(L, narg, "0x0");
-return strtol(c_str, NULL, 0);
-}
-*/
-
-/*
-Object* Eluna::CHECK_OBJECT(lua_State* L, int narg)
-{
-if (!L)
-return ElunaTemplate<Object>::check(LuaState, narg);
-else
-return ElunaTemplate<Object>::check(L, narg);
-}
-
-WorldObject* Eluna::CHECK_WORLDOBJECT(lua_State* L, int narg)
-{
-if (!L)
-return ElunaTemplate<WorldObject>::check(LuaState, narg);
-else
-return ElunaTemplate<WorldObject>::check(L, narg);
-}
-
-Unit* Eluna::CHECK_UNIT(lua_State* L, int narg)
-{
-WorldObject* obj = CheckValue<WorldObject*>(narg);
-if(!obj)
-return NULL;
-return obj->ToUnit();
-}
-
-Player* Eluna::CHECK_PLAYER(lua_State* L, int narg)
-{
-WorldObject* obj = CheckValue<WorldObject*>(narg);
-if(!obj)
-return NULL;
-return obj->ToPlayer();
-}
-
-Creature* Eluna::CHECK_CREATURE(lua_State* L, int narg)
-{
-WorldObject* obj = CheckValue<WorldObject*>(narg);
-if(!obj)
-return NULL;
-return obj->ToCreature();
-}
-
-GameObject* Eluna::CHECK_GAMEOBJECT(lua_State* L, int narg)
-{
-WorldObject* obj = CheckValue<WorldObject*>(narg);
-if(!obj)
-return NULL;
-return obj->ToGameObject();
-}
-
-Corpse* Eluna::CHECK_CORPSE(lua_State* L, int narg)
-{
-WorldObject* obj = CheckValue<WorldObject*>(narg);
-if (!obj)
-return NULL;
-return obj->ToCorpse();
-}
-
-WorldPacket* Eluna::CHECK_PACKET(lua_State* L, int narg)
-{
-if (!L)
-return ElunaTemplate<WorldPacket>::check(LuaState, narg);
-else
-return ElunaTemplate<WorldPacket>::check(L, narg);
-}
-
-Quest* Eluna::CHECK_QUEST(lua_State* L, int narg)
-{
-if (!L)
-return ElunaTemplate<Quest>::check(LuaState, narg);
-else
-return ElunaTemplate<Quest>::check(L, narg);
-}
-
-Spell* Eluna::CHECK_SPELL(lua_State* L, int narg)
-{
-if (!L)
-return ElunaTemplate<Spell>::check(LuaState, narg);
-else
-return ElunaTemplate<Spell>::check(L, narg);
-}
-*/
-
 // Saves the function reference ID given to the register type's store for given entry under the given event
 void Eluna::Register(uint8 regtype, uint32 id, uint32 evt, int functionRef)
 {
@@ -602,7 +500,7 @@ void Eluna::LuaEventMap::ScriptEventsExecute()
     }
 }
 
-// Lua taxi helper functions
+// Lua taxi helper functions UNUSED ATM!
 uint32 LuaTaxiMgr::nodeId = 500;
 void LuaTaxiMgr::StartTaxi(Player* player, uint32 pathid)
 {
