@@ -22,9 +22,17 @@ template<> const char* GetTName<Item>() { return "Item *"; }
 template<> const char* GetTName<Spell>() { return "Spell *"; }
 template<> const char* GetTName<Quest const>() { return "Quest *"; } // Needs testing
 template<> const char* GetTName<Map>() { return "Map *"; }
+template<> const char* GetTName<World>() { return "World *"; }
+template<> const char* GetTName<ConfigMgr>() { return "ConfigMgr *"; }
+template<> const char* GetTName<ObjectAccessor>() { return "ObjectAccessor *"; }
 
 extern "C" extern int luaopen_Eluna(lua_State* L);
 extern void RegisterGlobals(lua_State* L);
+
+void RestartEluna()
+{
+    sEluna->StartEluna(true);
+}
 
 void Eluna::StartEluna(bool restart)
 {

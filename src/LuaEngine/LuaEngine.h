@@ -11,6 +11,9 @@ extern "C"
 #include "ScriptPCH.h"
 #include "Channel.h"
 #include "GameObjectAI.h"
+#include "Config.h"
+#include "ObjectAccessor.h"
+#include "World.h"
 
 enum RegisterTypes
 {
