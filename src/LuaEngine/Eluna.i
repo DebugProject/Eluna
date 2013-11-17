@@ -43,6 +43,7 @@
     #include "WorldSession.h"
     #include "Chat.h"
     #include "DBCStore.h"
+    #include "Config.h"
 
     // DB
     #include "DatabaseWorkerPool.h"
@@ -62,7 +63,7 @@
 %include "lua_fnptr.i"
 %include cpointer.i
 
-// Ignored functions
+// Ignored
 %ignore ChatCommand;
 
 // Not working
@@ -99,8 +100,8 @@
 
 // Shadowed
 %ignore Position::Relocate(Position const* pos);
-%ignore Position::GetPosition(float &x, float &y);
-%ignore Position::GetPosition(float &x, float &y, float &z);
+%ignore Position::GetPosition(float &x, float &y) const;
+%ignore Position::GetPosition(float &x, float &y, float &z) const;
 %ignore Player::HasEnoughMoney(int32 amount) const;
 %ignore Unit::GetCurrentSpell(uint32 spellType) const;
 
@@ -195,3 +196,9 @@
 %include "CharacterDatabase.h"
 %include "LoginDatabase.h"
 %include "WorldDatabase.h"
+
+// Singletons
+// NOTE! Comment the singleton out from the wrapped header
+%constant World* sWorld = sWorld;
+%constant ConfigMgr* sConfigMgr = sConfigMgr;
+%constant ObjectAccessor* sObjectAccessor = sObjectAccessor;

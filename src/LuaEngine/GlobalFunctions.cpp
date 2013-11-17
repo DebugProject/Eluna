@@ -158,22 +158,6 @@ static int GetLuaEngine(lua_State* L)
     return 1;
 }
 
-static int pWorld(lua_State* L)
-{
-    sEluna->PushValue(sWorld);
-    return 1;
-}
-static int pConfigMgr(lua_State* L)
-{
-    sEluna->PushValue(sConfigMgr);
-    return 1;
-}
-static int pObjectAccessor(lua_State* L)
-{
-    sEluna->PushValue(sObjectAccessor);
-    return 1;
-}
-
 void RegisterGlobals(lua_State* L)
 {
     SWIG_Lua_module_add_function(L, "RegisterServerHook", RegisterServerHook);
@@ -185,7 +169,4 @@ void RegisterGlobals(lua_State* L)
     SWIG_Lua_module_add_function(L, "RegisterCreatureEvent", RegisterCreatureEvent);
     SWIG_Lua_module_add_function(L, "RegisterGameObjectEvent", RegisterGameObjectEvent);
     SWIG_Lua_module_add_function(L, "GetLuaEngine", GetLuaEngine);
-    SWIG_Lua_module_add_function(L, "sWorld", pWorld);
-    SWIG_Lua_module_add_function(L, "sConfigMgr", pConfigMgr);
-    SWIG_Lua_module_add_function(L, "sObjectAccessor", pObjectAccessor);
 }
