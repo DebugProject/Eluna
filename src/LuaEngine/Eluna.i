@@ -65,13 +65,13 @@
 
 // Ignored
 // Not working
-// %ignore Position::PositionXYZOStream;
-// %ignore Position::PositionXYZStream;
-// %ignore Group::CountTheRoll;
-// %ignore Group::GetRoll;
-// %ignore Group::ChangeMembersGroup;
-// %ignore Group::InInstance;
-// %ignore Spell::EffectSummonCritter;
+%ignore Position::PositionXYZOStream;
+%ignore Position::PositionXYZStream;
+%ignore Group::CountTheRoll;
+%ignore Group::GetRoll;
+%ignore Group::ChangeMembersGroup;
+%ignore Group::InInstance;
+%ignore Spell::EffectSummonCritter;
 
 // Not defined
 %ignore Vehicle::EjectPassenger;
