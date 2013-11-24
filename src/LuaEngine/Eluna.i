@@ -64,18 +64,14 @@
 %include cpointer.i
 
 // Ignored
-%ignore ChatCommand;
-
 // Not working
-%ignore Unit::HasSpell;
-%ignore Unit::GetFactionReactionTo;
-%ignore Position::PositionXYZOStream;
-%ignore Position::PositionXYZStream;
-%ignore Group::CountTheRoll;
-%ignore Group::GetRoll;
-%ignore Group::ChangeMembersGroup;
-%ignore Group::InInstance;
-%ignore Spell::EffectSummonCritter;
+// %ignore Position::PositionXYZOStream;
+// %ignore Position::PositionXYZStream;
+// %ignore Group::CountTheRoll;
+// %ignore Group::GetRoll;
+// %ignore Group::ChangeMembersGroup;
+// %ignore Group::InInstance;
+// %ignore Spell::EffectSummonCritter;
 
 // Not defined
 %ignore Vehicle::EjectPassenger;
@@ -128,7 +124,7 @@
 %apply int* INPUT {int *x1, int *y1}; // int *x1 and int *y1 are input
 %apply int* INOUT {int *sx, int *sy}; // int *sx and int *sy are input and output
 */
-// Fix GetPosition()
+// Fix GetPosition() // Others might need this too!
 %apply float& OUTPUT { float &x };
 %apply float& OUTPUT { float &y };
 %apply float& OUTPUT { float &z };
@@ -137,68 +133,68 @@
 // %import DBCStructure.i
 
 // src/server/game/Entities
-%include "GossipDef.h"
-%include "EventProcessor.h"
-%include "ObjectDefines.h"
-%include "Object.h"
+%include "../src/server/shared/Utilities/EventProcessor.h"
+%include "../src/server/game/Entities/Object/ObjectDefines.h"
+%include "../src/server/game/Entities/Object/Object.h"
 %template(CorpseGridObject) GridObject<Corpse>;
 %template(PlayerGridObject) GridObject<Player>;
 %template(CreatureGridObject) GridObject<Creature>;
 %template(GameObjectGridObject) GridObject<GameObject>;
 %template(DynamicObjectGridObject) GridObject<DynamicObject>;
-%include "UpdateFields.h"
-%include "Unit.h"
-%include "ItemEnchantmentMgr.h"
-%include "ItemPrototype.h"
-%include "Item.h"
-%include "Bag.h"
-%include "Corpse.h"
-%include "Creature.h"
-%include "CreatureGroups.h"
-%include "DynamicObject.h"
-%include "GameObject.h"
-%include "TemporarySummon.h"
-%include "PetDefines.h"
-%include "Pet.h"
-%include "Player.h"
+%include "../src/server/game/Entities/Object/Updates/UpdateFields.h"
+%include "../src/server/game/Entities/Unit/Unit.h"
+%include "../src/server/game/Entities/Item/ItemEnchantmentMgr.h"
+%include "../src/server/game/Entities/Item/ItemPrototype.h"
+%include "../src/server/game/Entities/Item/Item.h"
+%include "../src/server/game/Entities/Item/Container/Bag.h"
+%include "../src/server/game/Entities/Corpse/Corpse.h"
+%include "../src/server/game/Entities/Creature/Creature.h"
+%include "../src/server/game/Entities/Creature/CreatureGroups.h"
+%include "../src/server/game/Entities/Creature/TemporarySummon.h"
+%include "../src/server/game/Entities/Creature/GossipDef.h"
+%include "../src/server/game/Entities/DynamicObject/DynamicObject.h"
+%include "../src/server/game/Entities/GameObject/GameObject.h"
+%include "../src/server/game/Entities/Pet/PetDefines.h"
+%include "../src/server/game/Entities/Pet/Pet.h"
+%include "../src/server/game/Entities/Player/Player.h"
+%include "../src/server/game/Entities/Vehicle/VehicleDefines.h"
+%include "../src/server/game/Entities/Vehicle/Vehicle.h"
+%include "../src/server/game/Entities/Transport/Transport.h"
 // %include "SocialMgr.h"
 // %include "Totem.h"
-%include "VehicleDefines.h"
-%include "Vehicle.h"
-%include "Transport.h"
 // %include "ObjectPosSelector.h"
 // %include "UpdateData.h"
 // %include "UpdateFieldFlags.h"
 // %include "UpdateMask.h"
 
 // Other
-%include "Map.h"
-%include "Spell.h"
 // %include "ByteBuffer.h"
-%include "WorldPacket.h"
-%include "SpellAuraDefines.h"
-%include "SpellAuraEffects.h"
-%include "SpellAuras.h"
-%include "Guild.h"
-%include "Group.h"
-%include "WorldSession.h"
-%include "Chat.h"
-%include "Config.h"
-%include "DBCStore.h"
-%include "ObjectAccessor.h"
-%include "World.h"
+%include "../src/server/shared/Packets/WorldPacket.h"
+%include "../src/server/shared/Configuration/Config.h"
+%include "../src/server/shared/DataStores/DBCStore.h"
+%include "../src/server/game/Maps/Map.h"
+%include "../src/server/game/Spells/Spell.h"
+%include "../src/server/game/Spells/Auras/SpellAuraDefines.h"
+%include "../src/server/game/Spells/Auras/SpellAuraEffects.h"
+%include "../src/server/game/Spells/Auras/SpellAuras.h"
+%include "../src/server/game/Guilds/Guild.h"
+%include "../src/server/game/Groups/Group.h"
+%include "../src/server/game/Server/WorldSession.h"
+%include "../src/server/game/Chat/Chat.h"
+%include "../src/server/game/Globals/ObjectAccessor.h"
+%include "../src/server/game/World/World.h"
 
 // DB
-%include "Field.h"
-%include "DatabaseEnv.h"
-%include "QueryResult.h"
-%include "DatabaseWorkerPool.h"
-%include "CharacterDatabase.h"
-%include "LoginDatabase.h"
-%include "WorldDatabase.h"
+%include "../src/server/shared/Database/Field.h"
+%include "../src/server/shared/Database/DatabaseEnv.h"
+%include "../src/server/shared/Database/QueryResult.h"
+%include "../src/server/shared/Database/DatabaseWorkerPool.h"
+%include "../src/server/shared/Database/Implementation/CharacterDatabase.h"
+%include "../src/server/shared/Database/Implementation/LoginDatabase.h"
+%include "../src/server/shared/Database/Implementation/WorldDatabase.h"
 
 // Singletons
 // NOTE! Comment the singleton out from the wrapped header
-%constant World* sWorld = sWorld;
-%constant ConfigMgr* sConfigMgr = sConfigMgr;
-%constant ObjectAccessor* sObjectAccessor = sObjectAccessor;
+%constant World* World = sWorld;
+%constant ConfigMgr* ConfigMgr = sConfigMgr;
+%constant ObjectAccessor* ObjectAccessor = sObjectAccessor;

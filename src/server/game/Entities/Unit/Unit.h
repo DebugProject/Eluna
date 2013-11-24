@@ -1393,7 +1393,7 @@ class Unit : public WorldObject
         FactionTemplateEntry const* GetFactionTemplateEntry() const;
 
         ReputationRank GetReactionTo(Unit const* target) const;
-        ReputationRank static GetFactionReactionTo(FactionTemplateEntry const* factionTemplateEntry, Unit const* target);
+        static ReputationRank GetFactionReactionTo(FactionTemplateEntry const* factionTemplateEntry, Unit const* target);
 
         bool IsHostileTo(Unit const* unit) const;
         bool IsHostileToPlayers() const;
@@ -1516,7 +1516,7 @@ class Unit : public WorldObject
         uint32 GetCombatTimer() const { return m_CombatTimer; }
 
         bool HasAuraTypeWithFamilyFlags(AuraType auraType, uint32 familyName, uint32 familyFlags) const;
-        bool virtual HasSpell(uint32 /*spellID*/) const { return false; }
+        virtual bool HasSpell(uint32 /*spellID*/) const { return false; }
         bool HasBreakableByDamageAuraType(AuraType type, uint32 excludeAura = 0) const;
         bool HasBreakableByDamageCrowdControlAura(Unit* excludeCasterChannel = NULL) const;
 
