@@ -7,6 +7,12 @@ Eluna is a Lua Engine for World of Warcraft emulators. Our main site is [Emudevs
 
 We want to be the major Lua source for World of Warcraft emulation. If you need help regarding methods, hooks and other wiki related documentation, go to [Eluna's Wiki](http://wiki.emudevs.com/doku.php?id=eluna).
 
+## SOCIAL
+
+[EmuDevs Twitter] (https://twitter.com/EmuDevs)
+
+Follow us on our [Twitter] (https://twitter.com/EmuDevs) page to view the latest news about EmuDevs and what's going on with Eluna.
+
 
 ## LINKS
 
