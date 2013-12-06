@@ -26,5 +26,6 @@
 #include "SharedDefines.h"
 #include "SystemConfig.h"
 #include "Vehicle.h"
+#include "WeatherMgr.h"
 
 #endif

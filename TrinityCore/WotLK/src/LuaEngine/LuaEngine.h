@@ -285,6 +285,7 @@ public:
     void PushQuest(lua_State*, Quest const*);
     void PushPacket(lua_State*, WorldPacket*);
     void PushCorpse(lua_State*, Corpse*);
+    void PushWeather(lua_State*, Weather*);
     // Checks
     WorldPacket* CHECK_PACKET(lua_State* L, int narg);
     Object* CHECK_OBJECT(lua_State* L, int narg);
