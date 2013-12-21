@@ -7,6 +7,10 @@ Eluna is a Lua Engine for World of Warcraft emulators. Our main site is [Emudevs
 
 We want to be the major Lua source for World of Warcraft emulation. If you need help regarding methods, hooks and other wiki related documentation, go to [Eluna's Wiki](http://wiki.emudevs.com/doku.php?id=eluna).
 
+## MORE INFORMATION
+
+If you'd like to use Eluna with MaNGOS, look further down this README for the links to it. However, if you prefer Eluna with TrinityCore, you can download and keep updated with our standalone source here, or go to [Eluna WotLK TC] (https://github.com/ElunaLuaEngine/Eluna-TC-Wotlk) for our forked source of TrinityCore with Eluna in it.
+
 ## SOCIAL
 
 [EmuDevs Twitter] (https://twitter.com/EmuDevs)
@@ -27,6 +31,22 @@ Follow us on our [Twitter] (https://twitter.com/EmuDevs) page to view the latest
 [MaNGOS] (http://getmangos.com/)
 
 [TrinityCore] (http://www.trinitycore.org/)
+
+## Eluna MaNGOS LINKS
+
+ WITHOUT SD2
+ 
+[Eluna Classic MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreClassic)
+[Eluna TBC MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreTbc)
+[Eluna WotLK MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreWotlk)
+[Eluna Cataclysm MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreCata)
+
+ WITH SD2
+ 
+[Eluna Classic MaNGOS] (https://github.com/eluna-dev-mangos/ElunaSD2Classic)
+[Eluna TBC MaNGOS] (https://github.com/eluna-dev-mangos/ElunaSD2Tbc)
+[Eluna WotLK MaNGOS] (https://github.com/eluna-dev-mangos/ElunaSD2Wotlk)
+[Eluna Cataclysm MaNGOS] (https://github.com/eluna-dev-mangos/ElunaSD2Cata)
 
 ## SUPPORT
 
