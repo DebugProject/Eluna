@@ -42,8 +42,6 @@ EndScriptData */
 #include "WardenCheckMgr.h"
 #include "WaypointManager.h"
 
-extern void RestartEluna();
-
 class reload_commandscript : public CommandScript
 {
 public:
@@ -1252,7 +1250,8 @@ public:
     static bool HandleReloadElunaLuaEngine(ChatHandler* handler, const char* /*args*/)
     {
 #ifdef ELUNA
-        RestartEluna();
+        extern void StartEluna(bool restart);
+        StartEluna(true);
         handler->SendSysMessage("Reloaded Eluna Lua Engine");
 #else
         handler->PSendSysMessage("Eluna Lua Engine is not enabled");

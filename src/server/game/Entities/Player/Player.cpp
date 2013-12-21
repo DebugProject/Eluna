@@ -20255,7 +20255,8 @@ inline void Player::BuildPlayerChat(WorldPacket* data, uint8 msgtype, const std:
 void Player::Say(const std::string& text, const uint32 language)
 {
     std::string _text(text);
-    sScriptMgr->OnPlayerChat(this, CHAT_MSG_SAY, language, _text);
+    if (sScriptMgr->OnPlayerChat(this, CHAT_MSG_SAY, language, _text))
+        return;
 
     WorldPacket data(SMSG_MESSAGECHAT, 200);
     BuildPlayerChat(&data, CHAT_MSG_SAY, _text, language);
@@ -20265,7 +20266,8 @@ void Player::Say(const std::string& text, const uint32 language)
 void Player::Yell(const std::string& text, const uint32 language)
 {
     std::string _text(text);
-    sScriptMgr->OnPlayerChat(this, CHAT_MSG_YELL, language, _text);
+    if (sScriptMgr->OnPlayerChat(this, CHAT_MSG_YELL, language, _text))
+        return;
 
     WorldPacket data(SMSG_MESSAGECHAT, 200);
     BuildPlayerChat(&data, CHAT_MSG_YELL, _text, language);
@@ -20275,7 +20277,8 @@ void Player::Yell(const std::string& text, const uint32 language)
 void Player::TextEmote(const std::string& text)
 {
     std::string _text(text);
-    sScriptMgr->OnPlayerChat(this, CHAT_MSG_EMOTE, LANG_UNIVERSAL, _text);
+    if (sScriptMgr->OnPlayerChat(this, CHAT_MSG_EMOTE, LANG_UNIVERSAL, _text))
+        return;
 
     WorldPacket data(SMSG_MESSAGECHAT, 200);
     BuildPlayerChat(&data, CHAT_MSG_EMOTE, _text, LANG_UNIVERSAL);
@@ -20292,7 +20295,8 @@ void Player::Whisper(const std::string& text, uint32 language, uint64 receiver)
     Player* rPlayer = ObjectAccessor::FindPlayer(receiver);
 
     std::string _text(text);
-    sScriptMgr->OnPlayerChat(this, CHAT_MSG_WHISPER, language, _text, rPlayer);
+    if (sScriptMgr->OnPlayerChat(this, CHAT_MSG_WHISPER, language, _text, rPlayer))
+        return;
 
     WorldPacket data(SMSG_MESSAGECHAT, 200);
     BuildPlayerChat(&data, CHAT_MSG_WHISPER, _text, language);

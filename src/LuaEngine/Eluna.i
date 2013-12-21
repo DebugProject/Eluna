@@ -130,6 +130,10 @@
 %apply float& OUTPUT { float &z };
 %apply float& OUTPUT { float &o };
 
+
+%rename(GetSelection) Player::GetSelectedUnit() const;
+
+
 // %import DBCStructure.i
 
 // src/server/game/Entities

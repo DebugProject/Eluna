@@ -1,4 +1,19 @@
 #include "HookMgr.h"
+#include "Config.h"
+#include "DatabaseEnv.h"
+#include "DBCStores.h"
+#include "ObjectMgr.h"
+#include "OutdoorPvPMgr.h"
+#include "ScriptLoader.h"
+#include "ScriptSystem.h"
+#include "Transport.h"
+#include "Vehicle.h"
+#include "SpellInfo.h"
+#include "SpellScript.h"
+#include "GossipDef.h"
+#include "CreatureAIImpl.h"
+#include "Player.h"
+#include "WorldPacket.h"
 
 // misc
 void HookMgr::OnLootItem(Player* player, Item* item, uint32 count, uint64 guid)
@@ -44,40 +59,11 @@ void HookMgr::HandleGossipSelectOption(Player* player, uint64 guid, uint32 sende
     for (HookPointerSet::const_iterator it = hookPointers.begin(); it != hookPointers.end(); ++it)
         (*it)->HandleGossipSelectOption(player, guid, sender, action, code, menuId);
 }
-bool HookMgr::OnChat(Player* player, uint32 type, uint32 lang, std::string& msg)
-{
-    bool result = true;
-    for (HookPointerSet::const_iterator it = hookPointers.begin(); it != hookPointers.end(); ++it)
-        if (!(*it)->OnChat(player, type, lang, msg))
-            result = false;
-    return result;
-}
-bool HookMgr::OnChat(Player* player, uint32 type, uint32 lang, std::string& msg, Group* group)
-{
-    bool result = true;
-    for (HookPointerSet::const_iterator it = hookPointers.begin(); it != hookPointers.end(); ++it)
-        if (!(*it)->OnChat(player, type, lang, msg, group))
-            result = false;
-    return result;
-}
-bool HookMgr::OnChat(Player* player, uint32 type, uint32 lang, std::string& msg, Guild* guild)
-{
-    bool result = true;
-    for (HookPointerSet::const_iterator it = hookPointers.begin(); it != hookPointers.end(); ++it)
-        if (!(*it)->OnChat(player, type, lang, msg, guild))
-            result = false;
-    return result;
-}
-bool HookMgr::OnChat(Player* player, uint32 type, uint32 lang, std::string& msg, Channel* channel)
-{
-    bool result = true;
-    for (HookPointerSet::const_iterator it = hookPointers.begin(); it != hookPointers.end(); ++it)
-        if (!(*it)->OnChat(player, type, lang, msg, channel))
-            result = false;
-    return result;
-}
 void HookMgr::OnEngineRestart()
 {
+    // Unregisters and stops all timed events
+    LuaEventMap::ScriptEventsResetAll();
+    LuaEventData::RemoveAll();
     for (HookPointerSet::const_iterator it = hookPointers.begin(); it != hookPointers.end(); ++it)
         (*it)->OnEngineRestart();
 }
@@ -111,6 +97,22 @@ bool HookMgr::OnExpire(Player* player, ItemTemplate const* proto)
     bool result = false;
     for (HookPointerSet::const_iterator it = hookPointers.begin(); it != hookPointers.end(); ++it)
         if ((*it)->OnExpire(player, proto))
+            result = true;
+    return result;
+}
+bool HookMgr::OnGossipSelect(Player* player, Item* item, uint32 sender, uint32 action)
+{
+    bool result = false;
+    for (HookPointerSet::const_iterator it = hookPointers.begin(); it != hookPointers.end(); ++it)
+        if ((*it)->OnGossipSelect(player, item, sender, action))
+            result = true;
+    return result;
+}
+bool HookMgr::OnGossipSelectCode(Player* player, Item* item, uint32 sender, uint32 action, const char* code)
+{
+    bool result = false;
+    for (HookPointerSet::const_iterator it = hookPointers.begin(); it != hookPointers.end(); ++it)
+        if ((*it)->OnGossipSelectCode(player, item, sender, action, code))
             result = true;
     return result;
 }

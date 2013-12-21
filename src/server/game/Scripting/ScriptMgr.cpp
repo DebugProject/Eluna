@@ -32,7 +32,6 @@
 #include "CreatureAIImpl.h"
 #include "Player.h"
 #include "WorldPacket.h"
-#include "LuaEngine.h"
 #include "HookMgr.h"
 
 namespace
@@ -182,6 +181,7 @@ ScriptMgr::ScriptMgr()
 
 ScriptMgr::~ScriptMgr() { }
 
+extern void StartEluna(bool restart);
 void ScriptMgr::Initialize()
 {
     uint32 oldMSTime = getMSTime();
@@ -194,7 +194,7 @@ void ScriptMgr::Initialize()
     AddScripts();
 	/* Eluna [Lua Engine] */
 #ifdef ELUNA
-    sEluna->StartEluna(false);
+    StartEluna(false);
 #endif
 
     TC_LOG_INFO("server.loading", ">> Loaded %u C++ scripts in %u ms", GetScriptCount(), GetMSTimeDiffToNow(oldMSTime));
@@ -713,6 +713,33 @@ bool ScriptMgr::OnItemExpire(Player* player, ItemTemplate const* proto)
     return tmpscript->OnExpire(player, proto);
 }
 
+bool ScriptMgr::OnGossipSelect(Player* player, Item* item, uint32 sender, uint32 action)
+{
+    ASSERT(player);
+    ASSERT(item);
+#ifdef ELUNA
+    if(sHookMgr->OnGossipSelect(player, item, sender, action))
+        return true;
+#endif
+
+    GET_SCRIPT_RET(ItemScript, item->GetScriptId(), tmpscript, false);
+    return tmpscript->OnGossipSelect(player, item, sender, action);
+}
+
+bool ScriptMgr::OnGossipSelectCode(Player* player, Item* item, uint32 sender, uint32 action, const char* code)
+{
+    ASSERT(player);
+    ASSERT(item);
+    ASSERT(code);
+#ifdef ELUNA
+    if(sHookMgr->OnGossipSelectCode(player, item, sender, action, code))
+        return true;
+#endif
+
+    GET_SCRIPT_RET(ItemScript, item->GetScriptId(), tmpscript, false);
+    return tmpscript->OnGossipSelectCode(player, item, sender, action, code);
+}
+
 bool ScriptMgr::OnDummyEffect(Unit* caster, uint32 spellId, SpellEffIndex effIndex, Creature* target)
 {
     ASSERT(caster);
@@ -860,7 +887,7 @@ CreatureAI* ScriptMgr::GetCreatureAI(Creature* creature)
 {
     ASSERT(creature);
 #ifdef ELUNA
-    if(CreatureAI* luaAI = sEluna->LuaCreatureAI->GetAI(creature))
+    if(CreatureAI* luaAI = sHookMgr->LuaCreatureAI->GetAI(creature))
         return luaAI;
 #endif
 
@@ -872,7 +899,7 @@ GameObjectAI* ScriptMgr::GetGameObjectAI(GameObject* gameobject)
 {
     ASSERT(gameobject);
 #ifdef ELUNA
-    if(GameObjectAI* luaAI = sEluna->LuaGameObjectAI->GetAI(gameobject))
+    if(GameObjectAI* luaAI = sHookMgr->LuaGameObjectAI->GetAI(gameobject))
         return luaAI;
 #endif
 
@@ -1338,29 +1365,59 @@ void ScriptMgr::OnPlayerDuelEnd(Player* winner, Player* loser, DuelCompleteType 
     FOREACH_SCRIPT(PlayerScript)->OnDuelEnd(winner, loser, type);
 }
 
-void ScriptMgr::OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg)
+bool ScriptMgr::OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg)
 {
-    FOREACH_SCRIPT(PlayerScript)->OnChat(player, type, lang, msg);
+    bool ret = false;
+    FOR_SCRIPTS_RET(PlayerScript, itr, end, ret)
+    {
+        if (itr->second->OnChat(player, type, lang, msg))
+            ret = true;
+    }
+    return ret;
 }
 
-void ScriptMgr::OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Player* receiver)
+bool ScriptMgr::OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Player* receiver)
 {
-    FOREACH_SCRIPT(PlayerScript)->OnChat(player, type, lang, msg, receiver);
+    bool ret = false;
+    FOR_SCRIPTS_RET(PlayerScript, itr, end, ret)
+    {
+        if (itr->second->OnChat(player, type, lang, msg, receiver))
+            ret = true;
+    }
+    return ret;
 }
 
-void ScriptMgr::OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Group* group)
+bool ScriptMgr::OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Group* group)
 {
-    FOREACH_SCRIPT(PlayerScript)->OnChat(player, type, lang, msg, group);
+    bool ret = false;
+    FOR_SCRIPTS_RET(PlayerScript, itr, end, ret)
+    {
+        if (itr->second->OnChat(player, type, lang, msg, group))
+            ret = true;
+    }
+    return ret;
 }
 
-void ScriptMgr::OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Guild* guild)
+bool ScriptMgr::OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Guild* guild)
 {
-    FOREACH_SCRIPT(PlayerScript)->OnChat(player, type, lang, msg, guild);
+    bool ret = false;
+    FOR_SCRIPTS_RET(PlayerScript, itr, end, ret)
+    {
+        if (itr->second->OnChat(player, type, lang, msg, guild))
+            ret = true;
+    }
+    return ret;
 }
 
-void ScriptMgr::OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Channel* channel)
+bool ScriptMgr::OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Channel* channel)
 {
-    FOREACH_SCRIPT(PlayerScript)->OnChat(player, type, lang, msg, channel);
+    bool ret = false;
+    FOR_SCRIPTS_RET(PlayerScript, itr, end, ret)
+    {
+        if (itr->second->OnChat(player, type, lang, msg, channel))
+            ret = true;
+    }
+    return ret;
 }
 
 void ScriptMgr::OnPlayerEmote(Player* player, uint32 emote)
@@ -1421,6 +1478,41 @@ void ScriptMgr::OnPlayerEnterCombat(Player* player, Unit* enemy)
 void ScriptMgr::OnPlayerLeaveCombat(Player* player)
 {
     FOREACH_SCRIPT(PlayerScript)->OnPlayerLeaveCombat(player);
+}
+
+void ScriptMgr::OnPlayerLootItem(Player* player, Item* item, uint32 count, uint64 guid)
+{
+    FOREACH_SCRIPT(PlayerScript)->OnLootItem(player, item, count, guid);
+}
+
+void ScriptMgr::OnPlayerFirstLogin(Player* player)
+{
+    FOREACH_SCRIPT(PlayerScript)->OnFirstLogin(player);
+}
+
+void ScriptMgr::OnPlayerEquip(Player* player, Item* item, uint8 bag, uint8 slot)
+{
+    FOREACH_SCRIPT(PlayerScript)->OnEquip(player, item, bag, slot);
+}
+
+void ScriptMgr::OnPlayerRepop(Player* player)
+{
+    FOREACH_SCRIPT(PlayerScript)->OnRepop(player);
+}
+
+void ScriptMgr::OnPlayerResurrect(Player* player)
+{
+    FOREACH_SCRIPT(PlayerScript)->OnResurrect(player);
+}
+
+void ScriptMgr::OnGossipSelect(Player* player, uint32 menuid, uint32 sender, uint32 action)
+{
+    FOREACH_SCRIPT(PlayerScript)->OnGossipSelect(player, menuid, sender, action);
+}
+
+void ScriptMgr::OnGossipSelectCode(Player* player, uint32 menuid, uint32 sender, uint32 action, const char* code)
+{
+    FOREACH_SCRIPT(PlayerScript)->OnGossipSelectCode(player, menuid, sender, action, code);
 }
 
 // Guild

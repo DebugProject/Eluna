@@ -1,5 +1,4 @@
 #include "LuaEngine.h"
-#include "HookMgr.h"
 
 #if PLATFORM == PLATFORM_UNIX
 #include <dirent.h>
@@ -20,7 +19,7 @@ template<> const char* GetTName<Aura>() { return "Aura *"; }
 template<> const char* GetTName<WorldPacket>() { return "WorldPacket *"; }
 template<> const char* GetTName<Item>() { return "Item *"; }
 template<> const char* GetTName<Spell>() { return "Spell *"; }
-template<> const char* GetTName<Quest const>() { return "Quest *"; } // Needs testing
+template<> const char* GetTName<Quest>() { return "Quest *"; }
 template<> const char* GetTName<Map>() { return "Map *"; }
 template<> const char* GetTName<World>() { return "World *"; }
 template<> const char* GetTName<ConfigMgr>() { return "ConfigMgr *"; }
@@ -29,9 +28,9 @@ template<> const char* GetTName<ObjectAccessor>() { return "ObjectAccessor *"; }
 extern "C" extern int luaopen_Eluna(lua_State* L);
 extern void RegisterGlobals(lua_State* L);
 
-void RestartEluna()
+void StartEluna(bool restart)
 {
-    sEluna->StartEluna(true);
+    sEluna->StartEluna(restart);
 }
 
 void Eluna::StartEluna(bool restart)
@@ -43,10 +42,6 @@ void Eluna::StartEluna(bool restart)
 
         if (LuaState)
         {
-            // Unregisters and stops all timed events
-            LuaEventMap::ScriptEventsResetAll();
-            LuaEventData::RemoveAll();
-
             // Remove bindings
             for (std::map<int, std::vector<int> >::iterator itr = ServerEventBindings.begin(); itr != ServerEventBindings.end(); ++itr)
             {
@@ -66,7 +61,7 @@ void Eluna::StartEluna(bool restart)
         }
     }
     else
-        AddScriptHooks();
+        sHookMgr->AddScriptHooks();
 
     LuaState = luaL_newstate();
     TC_LOG_INFO("server.loading", "Eluna Lua Engine loaded.");
@@ -85,7 +80,7 @@ void Eluna::StartEluna(bool restart)
         if (luaL_loadfile(LuaState, filename) != 0)
         {
             TC_LOG_ERROR("server.loading", "Eluna::Error loading `%s`.", itr->c_str());
-            report(LuaState);
+            report();
         }
         else
         {
@@ -93,7 +88,7 @@ void Eluna::StartEluna(bool restart)
             if (err != 0 && err == LUA_ERRRUN)
             {
                 TC_LOG_ERROR("server.loading", "Eluna::Error loading `%s`.", itr->c_str());
-                report(LuaState);
+                report();
             }
         }
         ++count;
@@ -131,9 +126,8 @@ void Eluna::LoadDirectory(char* Dirname, LoadedScripts* lscr)
     hFile = FindFirstFile(SearchName, &FindData);
     if (hFile == INVALID_HANDLE_VALUE)
     {
-        TC_LOG_ERROR("server.loading", "Eluna::No `scripts` directory found! Creating a 'scripts' directory and restarting Eluna.");
+        TC_LOG_ERROR("server.loading", "Eluna::No `scripts` directory found! Creating a 'scripts' directory.");
         CreateDirectory("scripts", NULL);
-        StartEluna(true);
         return;
     }
 
@@ -209,58 +203,42 @@ void Eluna::LoadDirectory(char* Dirname, LoadedScripts* lscr)
 #endif
 }
 
-void Eluna::report(lua_State* L)
+void Eluna::report()
 {
-    const char* msg = lua_tostring(L, -1);
+    const char* msg = lua_tostring(LuaState, -1);
     while (msg)
     {
-        lua_pop(L, -1);
+        lua_pop(LuaState, -1);
         printf("\t%s\n",msg);
-        msg = lua_tostring(L, -1);
+        msg = lua_tostring(LuaState, -1);
     }
 }
 
-void Eluna::BeginCall(int fReference)
+void Eluna::BeginCall(int funcRef)
 {
-    lua_settop(LuaState, 0); //stack should be empty
-    lua_rawgeti(LuaState, LUA_REGISTRYINDEX, (fReference));
+    lua_settop(LuaState, 0);
+    lua_rawgeti(LuaState, LUA_REGISTRYINDEX, (funcRef));
 }
 
-bool Eluna::ExecuteCall(uint8 params, uint8 res)
+bool Eluna::ExecuteCall()
 {
-    bool ret = true;
-    int top = lua_gettop(LuaState);
+    if (lua_type(LuaState, 1) != LUA_TFUNCTION) // Stack bottom isnt a function?
+    {
+        EndCall();
+        return false;
+    }
 
-    if (lua_type(LuaState, top-params) == LUA_TFUNCTION) // is function
+    if (lua_pcall(LuaState,lua_gettop(LuaState)-1,LUA_MULTRET,0))
     {
-        if (lua_pcall(LuaState,params,res,0) )
-        {
-            report(LuaState);
-            ret = false;
-        }
+        report();
+        return false;
     }
-    else
-    {
-        ret = false;
-        if (params > 0)
-        {
-            for (int i = top; i >= (top-params); i--)
-            {
-                if (!lua_isnone(LuaState, i) )
-                    lua_remove(LuaState, i);
-            }
-        }
-    }
-    return ret;
+    return true;
 }
 
-void Eluna::EndCall(uint8 res)
+void Eluna::EndCall()
 {
-    for (int i = res; i > 0; i--)
-    {
-        if (!lua_isnone(LuaState,res))
-            lua_remove(LuaState,res);
-    }
+    lua_settop(LuaState, 0);
 }
 
 void Eluna::PushValue()
@@ -418,6 +396,15 @@ void Eluna::Register(uint8 regtype, uint32 id, uint32 evt, int functionRef)
     }
     luaL_error(LuaState, "Unknown event type (regtype %d, id %d, event %d)", regtype, id, evt);
 }
+bool Eluna::ElunaBind::Call(uint32 entryId, uint32 eventId)
+{
+    int bind = GetBind(entryId, eventId);
+    if (!bind)
+        return false;
+    sEluna->BeginCall(bind);
+    sEluna->PushValue(eventId);
+    return true;
+}
 void Eluna::ElunaBind::Clear()
 {
     for (ElunaEntryMap::iterator itr = Bindings.begin(); itr != Bindings.end(); ++itr)
@@ -437,75 +424,6 @@ void Eluna::ElunaBind::Insert(uint32 entryId, uint32 eventId, int funcRef)
     }
     else
         Bindings[entryId][eventId] = funcRef;
-}
-
-UNORDERED_MAP<uint64, Eluna::LuaEventMap*> Eluna::LuaEventMap::LuaEventMaps;
-UNORDERED_MAP<int, Eluna::LuaEventData*> Eluna::LuaEventData::LuaEvents;
-UNORDERED_MAP<uint64, std::set<int> > Eluna::LuaEventData::EventIDs;
-
-void Eluna::LuaEventMap::ScriptEventsResetAll()
-{
-    // GameObject events reset
-    if (!LuaEventMaps.empty())
-        for (UNORDERED_MAP<uint64, LuaEventMap*>::const_iterator itr = LuaEventMaps.begin(); itr != LuaEventMaps.end(); ++itr)
-            if (itr->second)
-                itr->second->ScriptEventsReset();
-    // Global events reset
-    sEluna->LuaWorldAI->ScriptEventsReset();
-}
-void Eluna::LuaEventMap::ScriptEventsReset()
-{
-    _time = 0;
-    if (ScriptEventsEmpty())
-        return;
-    for (EventStore::const_iterator itr = _eventMap.begin(); itr != _eventMap.end();)
-    {
-        luaL_unref(sEluna->LuaState, LUA_REGISTRYINDEX, itr->second.funcRef);
-        ++itr;
-    }
-    _eventMap.clear();
-}
-void Eluna::LuaEventMap::ScriptEventCancel(int funcRef)
-{
-    if (ScriptEventsEmpty())
-        return;
-
-    for (EventStore::iterator itr = _eventMap.begin(); itr != _eventMap.end();)
-    {
-        if (funcRef == itr->second.funcRef)
-        {
-            luaL_unref(sEluna->LuaState, LUA_REGISTRYINDEX, itr->second.funcRef);
-            _eventMap.erase(itr++);
-        }
-        else
-            ++itr;
-    }
-}
-void Eluna::LuaEventMap::ScriptEventsExecute()
-{
-    if (ScriptEventsEmpty())
-        return;
-
-    for (EventStore::iterator itr = _eventMap.begin(); itr != _eventMap.end();)
-    {
-        if (itr->first > _time)
-        {
-            ++itr;
-            continue;
-        }
-
-        OnScriptEvent(itr->second.funcRef, itr->second.delay, itr->second.calls);
-
-        if (itr->second.calls != 1)
-        {
-            if (itr->second.calls > 1)
-                itr->second.calls = itr->second.calls-1;
-            _eventMap.insert(EventStore::value_type(_time + itr->second.delay, itr->second));
-        }
-        else
-            luaL_unref(sEluna->LuaState, LUA_REGISTRYINDEX, itr->second.funcRef);
-        _eventMap.erase(itr++);
-    }
 }
 
 // Lua taxi helper functions UNUSED ATM!

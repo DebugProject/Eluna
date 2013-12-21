@@ -387,6 +387,12 @@ class ItemScript : public ScriptObject
 
         // Called when the item expires (is destroyed).
         virtual bool OnExpire(Player* /*player*/, ItemTemplate const* /*proto*/) { return false; }
+
+        // Called when a player selects a gossip item in the item's gossip menu.
+        virtual bool OnGossipSelect(Player* /*player*/, Item* /*item*/, uint32 /*sender*/, uint32 /*action*/) { return false; }
+
+        // Called when a player selects a gossip with a code in the item's gossip menu.
+        virtual bool OnGossipSelectCode(Player* /*player*/, Item* /*item*/, uint32 /*sender*/, uint32 /*action*/, const char* /*code*/) { return false; }
 };
 
 class UnitScript : public ScriptObject
@@ -719,15 +725,15 @@ class PlayerScript : public UnitScript
         virtual void OnDuelEnd(Player* /*winner*/, Player* /*loser*/, DuelCompleteType /*type*/) { }
 
         // The following methods are called when a player sends a chat message.
-        virtual void OnChat(Player* /*player*/, uint32 /*type*/, uint32 /*lang*/, std::string& /*msg*/) { }
+        virtual bool OnChat(Player* /*player*/, uint32 /*type*/, uint32 /*lang*/, std::string& /*msg*/) { return false; }
 
-        virtual void OnChat(Player* /*player*/, uint32 /*type*/, uint32 /*lang*/, std::string& /*msg*/, Player* /*receiver*/) { }
+        virtual bool OnChat(Player* /*player*/, uint32 /*type*/, uint32 /*lang*/, std::string& /*msg*/, Player* /*receiver*/) { return false; }
 
-        virtual void OnChat(Player* /*player*/, uint32 /*type*/, uint32 /*lang*/, std::string& /*msg*/, Group* /*group*/) { }
+        virtual bool OnChat(Player* /*player*/, uint32 /*type*/, uint32 /*lang*/, std::string& /*msg*/, Group* /*group*/) { return false; }
 
-        virtual void OnChat(Player* /*player*/, uint32 /*type*/, uint32 /*lang*/, std::string& /*msg*/, Guild* /*guild*/) { }
+        virtual bool OnChat(Player* /*player*/, uint32 /*type*/, uint32 /*lang*/, std::string& /*msg*/, Guild* /*guild*/) { return false; }
 
-        virtual void OnChat(Player* /*player*/, uint32 /*type*/, uint32 /*lang*/, std::string& /*msg*/, Channel* /*channel*/) { }
+        virtual bool OnChat(Player* /*player*/, uint32 /*type*/, uint32 /*lang*/, std::string& /*msg*/, Channel* /*channel*/) { return false; }
 
         // Both of the below are called on emote opcodes.
         virtual void OnEmote(Player* /*player*/, uint32 /*emote*/) { }
@@ -761,11 +767,32 @@ class PlayerScript : public UnitScript
         // Called when a player changes to a new map (after moving to new map)
         virtual void OnMapChanged(Player* /*player*/) { }
 
-        // Called when a player enters combat
+        // Called when a player enters combat.
         virtual void OnPlayerEnterCombat(Player* /*player*/, Unit* /*enemy*/) { }
 
-        // Called when a player leaves combat
+        // Called when a player leaves combat.
         virtual void OnPlayerLeaveCombat(Player* /*player*/) { }
+
+        // Called when a player loots an item.
+        virtual void OnLootItem(Player* /*player*/, Item* /*item*/, uint32 /*count*/, uint64 /*guid*/) { }
+
+        // Called when a player logs in the first time.
+        virtual void OnFirstLogin(Player* /*player*/) { }
+
+        // Called when a player equips an item.
+        virtual void OnEquip(Player* /*player*/, Item* /*item*/, uint8 /*bag*/, uint8 /*slot*/) { }
+
+        // Called when a player revives.
+        virtual void OnRepop(Player* /*player*/) { }
+
+        // Called when a player is resurrected.
+        virtual void OnResurrect(Player* /*player*/) { }
+        
+        // Called when a player selects a gossip item in his gossip menu.
+        virtual void OnGossipSelect(Player* /*player*/, uint32 /*menuid*/, uint32 /*sender*/, uint32 /*action*/) { }
+        
+        // Called when a player selects a gossip with a code in his gossip menu.
+        virtual void OnGossipSelectCode(Player* /*player*/, uint32 /*menuid*/, uint32 /*sender*/, uint32 /*action*/, const char* /*code*/) { }
 };
 
 class GuildScript : public ScriptObject
@@ -923,7 +950,9 @@ class ScriptMgr
         bool OnQuestAccept(Player* player, Item* item, Quest const* quest);
         bool OnItemUse(Player* player, Item* item, SpellCastTargets const& targets);
         bool OnItemExpire(Player* player, ItemTemplate const* proto);
-
+        bool OnGossipSelect(Player* player, Item* item, uint32 sender, uint32 action);
+        bool OnGossipSelectCode(Player* player, Item* item, uint32 sender, uint32 action, const char* code);
+        
     public: /* CreatureScript */
 
         bool OnDummyEffect(Unit* caster, uint32 spellId, SpellEffIndex effIndex, Creature* target);
@@ -1025,11 +1054,11 @@ class ScriptMgr
         void OnPlayerDuelRequest(Player* target, Player* challenger);
         void OnPlayerDuelStart(Player* player1, Player* player2);
         void OnPlayerDuelEnd(Player* winner, Player* loser, DuelCompleteType type);
-        void OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg);
-        void OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Player* receiver);
-        void OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Group* group);
-        void OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Guild* guild);
-        void OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Channel* channel);
+        bool OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg);
+        bool OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Player* receiver);
+        bool OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Group* group);
+        bool OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Guild* guild);
+        bool OnPlayerChat(Player* player, uint32 type, uint32 lang, std::string& msg, Channel* channel);
         void OnPlayerEmote(Player* player, uint32 emote);
         void OnPlayerTextEmote(Player* player, uint32 textEmote, uint32 emoteNum, uint64 guid);
         void OnPlayerSpellCast(Player* player, Spell* spell, bool skipCheck);
@@ -1042,6 +1071,13 @@ class ScriptMgr
         void OnPlayerUpdateZone(Player* player, uint32 newZone, uint32 newArea);
         void OnPlayerEnterCombat(Player* player, Unit* enemy);
         void OnPlayerLeaveCombat(Player* player);
+        void OnPlayerLootItem(Player* player, Item* item, uint32 count, uint64 guid);
+        void OnPlayerFirstLogin(Player* player);
+        void OnPlayerEquip(Player* player, Item* item, uint8 bag, uint8 slot);
+        void OnPlayerRepop(Player* player);
+        void OnPlayerResurrect(Player* player);
+        void OnGossipSelect(Player* player, uint32 menuid, uint32 sender, uint32 action);
+        void OnGossipSelectCode(Player* player, uint32 menuid, uint32 sender, uint32 action, const char* code);
 
     public: /* GuildScript */
 
