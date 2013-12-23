@@ -87,14 +87,11 @@ class DBCStorage
                     return NULL;
                 return it->second;
             }
+
             return (id >= nCount) ? NULL : indexTable.asT[id];
         }
 
-        uint32  GetNumRows() const { return nCount; }
-        char const* GetFormat() const { return fmt; }
-        uint32 GetFieldCount() const { return fieldCount; }
-
-        void SetEntry(uint32 id, T* t) // Cryptic they say..
+        void SetEntry(uint32 id, T* t)
         {
             if(!loaded)
             {
@@ -111,6 +108,10 @@ class DBCStorage
                 nCount = id+1;
             data[id] = t;
         }
+
+        uint32  GetNumRows() const { return nCount; }
+        char const* GetFormat() const { return fmt; }
+        uint32 GetFieldCount() const { return fieldCount; }
 
         bool Load(char const* fn, SqlDbc* sql)
         {
@@ -145,7 +146,7 @@ class DBCStorage
                     // Check if sql index pos is valid
                     if (int32(result->GetFieldCount() - 1) < sql->sqlIndexPos)
                     {
-                        TC_LOG_ERROR(LOG_FILTER_SERVER_LOADING, "Invalid index pos for dbc:'%s'", sql->sqlTableName.c_str());
+                        TC_LOG_ERROR("server.loading", "Invalid index pos for dbc:'%s'", sql->sqlTableName.c_str());
                         return false;
                     }
                 }
@@ -176,7 +177,7 @@ class DBCStorage
                             uint32 id = fields[sql->sqlIndexPos].GetUInt32();
                             if (indexTable.asT[id])
                             {
-                                TC_LOG_ERROR(LOG_FILTER_SERVER_LOADING, "Index %d already exists in dbc:'%s'", id, sql->sqlTableName.c_str());
+                                TC_LOG_ERROR("server.loading", "Index %d already exists in dbc:'%s'", id, sql->sqlTableName.c_str());
                                 return false;
                             }
 
@@ -233,7 +234,7 @@ class DBCStorage
                                         offset += 1;
                                         break;
                                     case FT_STRING:
-                                        TC_LOG_ERROR(LOG_FILTER_SERVER_LOADING, "Unsupported data type in table '%s' at char %d", sql->sqlTableName.c_str(), columnNumber);
+                                        TC_LOG_ERROR("server.loading", "Unsupported data type in table '%s' at char %d", sql->sqlTableName.c_str(), columnNumber);
                                         return false;
                                     case FT_SORT:
                                         break;
@@ -246,14 +247,14 @@ class DBCStorage
                             }
                             else
                             {
-                                TC_LOG_ERROR(LOG_FILTER_SERVER_LOADING, "Incorrect sql format string '%s' at char %d", sql->sqlTableName.c_str(), columnNumber);
+                                TC_LOG_ERROR("server.loading", "Incorrect sql format string '%s' at char %d", sql->sqlTableName.c_str(), columnNumber);
                                 return false;
                             }
                         }
 
                         if (sqlColumnNumber != (result->GetFieldCount() - 1))
                         {
-                            TC_LOG_ERROR(LOG_FILTER_SERVER_LOADING, "SQL and DBC format strings are not matching for table: '%s'", sql->sqlTableName.c_str());
+                            TC_LOG_ERROR("server.loading", "SQL and DBC format strings are not matching for table: '%s'", sql->sqlTableName.c_str());
                             return false;
                         }
 
@@ -285,14 +286,14 @@ class DBCStorage
 
         void Clear()
         {
-            if (!indexTable.asT)
-                return;
-
             if (loaded)
             {
                 data.clear();
                 loaded = false;
             }
+
+            if (!indexTable.asT)
+                return;
 
             delete[] reinterpret_cast<char*>(indexTable.asT);
             indexTable.asT = NULL;

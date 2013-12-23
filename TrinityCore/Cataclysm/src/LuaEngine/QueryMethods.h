@@ -1,67 +1,53 @@
-/* Copyright (C) 2010 - 2013 Eluna Lua Engine <http://emudevs.com/>
+/*
+* Copyright (C) 2010 - 2013 Eluna Lua Engine <http://emudevs.com/>
 * This program is free software licensed under GPL version 3
-* Please see the included DOCS/LICENSE.TXT for more information */
+* Please see the included DOCS/LICENSE.TXT for more information
+*/
 
 #ifndef QUERYMETHODS_H
 #define QUERYMETHODS_H
 
-class LuaQuery
+namespace LuaQuery
 {
-public:
-
-    // QueryResult methods
-
-    static int GetUnitType(lua_State* L, QueryResult* result)
-    {
-        if (!result)
-            return 0;
-
-        sEluna->PushString(L, "QueryResult");
-        return 1;
-    }
-
     static int NextRow(lua_State* L, QueryResult* result)
     {
         if (!result)
-            sEluna->PushBoolean(L, false);
+            sEluna->Push(L, false);
         else
-            sEluna->PushBoolean(L, result->get()->NextRow());
+            sEluna->Push(L, result->get()->NextRow());
         return 1;
     }
 
     static int GetColumnCount(lua_State* L, QueryResult* result)
     {
         if (!result)
-            sEluna->PushUnsigned(L, 0);
+            sEluna->Push(L, 0);
         else
-            sEluna->PushUnsigned(L, result->get()->GetFieldCount());
+            sEluna->Push(L, result->get()->GetFieldCount());
         return 1;
     }
 
     static int GetRowCount(lua_State* L, QueryResult* result)
     {
         if (!result)
-            sEluna->PushUnsigned(L, 0);
+            sEluna->Push(L, 0);
         else
         {
             if (result->get()->GetRowCount() > (uint32)-1)
-                sEluna->PushUnsigned(L, (uint32)-1);
+                sEluna->Push(L, (uint32)-1);
             else
-                sEluna->PushUnsigned(L, result->get()->GetRowCount());
+                sEluna->Push(L, result->get()->GetRowCount());
         }
         return 1;
     }
-
-
-    // Field methods
-
+    
     static int IsNull(lua_State* L, QueryResult* result)
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushBoolean(L, true);
+            sEluna->Push(L, true);
         else
-            sEluna->PushBoolean(L, result->get()->Fetch()[col].IsNull());
+            sEluna->Push(L, result->get()->Fetch()[col].IsNull());
         return 1;
     }
 
@@ -69,9 +55,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushBoolean(L, false);
+            sEluna->Push(L, false);
         else
-            sEluna->PushBoolean(L, result->get()->Fetch()[col].GetBool());
+            sEluna->Push(L, result->get()->Fetch()[col].GetBool());
         return 1;
     }
 
@@ -79,9 +65,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushUnsigned(L, 0);
+            sEluna->Push(L, 0);
         else
-            sEluna->PushUnsigned(L, result->get()->Fetch()[col].GetUInt8());
+            sEluna->Push(L, result->get()->Fetch()[col].GetUInt8());
         return 1;
     }
 
@@ -89,9 +75,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushUnsigned(L, 0);
+            sEluna->Push(L, 0);
         else
-            sEluna->PushUnsigned(L, result->get()->Fetch()[col].GetUInt16());
+            sEluna->Push(L, result->get()->Fetch()[col].GetUInt16());
         return 1;
     }
 
@@ -99,9 +85,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushUnsigned(L, 0);
+            sEluna->Push(L, 0);
         else
-            sEluna->PushUnsigned(L, result->get()->Fetch()[col].GetUInt32());
+            sEluna->Push(L, result->get()->Fetch()[col].GetUInt32());
         return 1;
     }
 
@@ -109,9 +95,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushULong(L, 0);
+            sEluna->Push(L, 0);
         else
-            sEluna->PushULong(L, result->get()->Fetch()[col].GetUInt64());
+            sEluna->Push(L, result->get()->Fetch()[col].GetUInt64());
         return 1;
     }
 
@@ -119,9 +105,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushInteger(L, 0);
+            sEluna->Push(L, 0);
         else
-            sEluna->PushInteger(L, result->get()->Fetch()[col].GetInt8());
+            sEluna->Push(L, result->get()->Fetch()[col].GetInt8());
         return 1;
     }
 
@@ -129,9 +115,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushInteger(L, 0);
+            sEluna->Push(L, 0);
         else
-            sEluna->PushInteger(L, result->get()->Fetch()[col].GetInt16());
+            sEluna->Push(L, result->get()->Fetch()[col].GetInt16());
         return 1;
     }
 
@@ -139,9 +125,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushInteger(L, 0);
+            sEluna->Push(L, 0);
         else
-            sEluna->PushInteger(L, result->get()->Fetch()[col].GetInt32());
+            sEluna->Push(L, result->get()->Fetch()[col].GetInt32());
         return 1;
     }
 
@@ -149,9 +135,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushLong(L, 0);
+            sEluna->Push(L, 0);
         else
-            sEluna->PushLong(L, result->get()->Fetch()[col].GetInt64());
+            sEluna->Push(L, result->get()->Fetch()[col].GetInt64());
         return 1;
     }
 
@@ -159,9 +145,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushFloat(L, 0.0f);
+            sEluna->Push(L, 0.0f);
         else
-            sEluna->PushFloat(L, result->get()->Fetch()[col].GetFloat());
+            sEluna->Push(L, result->get()->Fetch()[col].GetFloat());
         return 1;
     }
 
@@ -169,9 +155,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushDouble(L, 0.0);
+            sEluna->Push(L, 0.0);
         else
-            sEluna->PushDouble(L, result->get()->Fetch()[col].GetDouble());
+            sEluna->Push(L, result->get()->Fetch()[col].GetDouble());
         return 1;
     }
 
@@ -179,9 +165,9 @@ public:
     {
         uint32 col = luaL_checkunsigned(L, 1);
         if (!result || !*result || col >= result->get()->GetFieldCount())
-            sEluna->PushString(L, "");
+            sEluna->Push(L, "");
         else
-            sEluna->PushString(L, result->get()->Fetch()[col].GetString().c_str());
+            sEluna->Push(L, result->get()->Fetch()[col].GetString());
         return 1;
     }
 };
