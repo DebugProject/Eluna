@@ -9,7 +9,7 @@
 
 void HookMgr::OnWorldUpdate(uint32 diff)
 {
-    sEluna->EventMgr.Update(diff);
+    sEluna->m_EventMgr.Update(diff);
     for (std::vector<int>::const_iterator itr = sEluna->ServerEventBindings[WORLD_EVENT_ON_UPDATE].begin();
         itr != sEluna->ServerEventBindings[WORLD_EVENT_ON_UPDATE].end(); ++itr)
     {
@@ -1082,7 +1082,7 @@ public:
 
     void OnUpdate(uint32 diff) OVERRIDE
     {
-        sEluna->EventMgr.Update(diff);
+        sEluna->m_EventMgr.Update(diff);
         for (std::vector<int>::const_iterator itr = sEluna->ServerEventBindings[WORLD_EVENT_ON_UPDATE].begin();
             itr != sEluna->ServerEventBindings[WORLD_EVENT_ON_UPDATE].end(); ++itr)
         {
@@ -1830,6 +1830,7 @@ CreatureAI* HookMgr::GetAI(Creature* creature)
         return NULL;
     return new ElunaCreatureAI(creature);
 }
+
 GameObjectAI* HookMgr::GetAI(GameObject* gameObject)
 {
     if (!sEluna->GameObjectEventBindings->GetBindMap(gameObject->GetEntry()))
