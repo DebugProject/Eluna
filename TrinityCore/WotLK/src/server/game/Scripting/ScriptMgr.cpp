@@ -1148,6 +1148,9 @@ void ScriptMgr::OnInstall(Vehicle* veh)
 {
     ASSERT(veh);
     ASSERT(veh->GetBase()->GetTypeId() == TYPEID_UNIT);
+#ifdef ELUNA
+    sHookMgr->OnInstall(veh);
+#endif
 
     GET_SCRIPT(VehicleScript, veh->GetBase()->ToCreature()->GetScriptId(), tmpscript);
     tmpscript->OnInstall(veh);
@@ -1157,6 +1160,9 @@ void ScriptMgr::OnUninstall(Vehicle* veh)
 {
     ASSERT(veh);
     ASSERT(veh->GetBase()->GetTypeId() == TYPEID_UNIT);
+#ifdef ELUNA
+    sHookMgr->OnUninstall(veh);
+#endif
 
     GET_SCRIPT(VehicleScript, veh->GetBase()->ToCreature()->GetScriptId(), tmpscript);
     tmpscript->OnUninstall(veh);
@@ -1166,6 +1172,9 @@ void ScriptMgr::OnReset(Vehicle* veh)
 {
     ASSERT(veh);
     ASSERT(veh->GetBase()->GetTypeId() == TYPEID_UNIT);
+#ifdef ELUNA
+    sHookMgr->OnReset(veh);
+#endif
 
     GET_SCRIPT(VehicleScript, veh->GetBase()->ToCreature()->GetScriptId(), tmpscript);
     tmpscript->OnReset(veh);
@@ -1176,6 +1185,9 @@ void ScriptMgr::OnInstallAccessory(Vehicle* veh, Creature* accessory)
     ASSERT(veh);
     ASSERT(veh->GetBase()->GetTypeId() == TYPEID_UNIT);
     ASSERT(accessory);
+#ifdef ELUNA
+    sHookMgr->OnInstallAccessory(veh, accessory);
+#endif
 
     GET_SCRIPT(VehicleScript, veh->GetBase()->ToCreature()->GetScriptId(), tmpscript);
     tmpscript->OnInstallAccessory(veh, accessory);
@@ -1186,6 +1198,9 @@ void ScriptMgr::OnAddPassenger(Vehicle* veh, Unit* passenger, int8 seatId)
     ASSERT(veh);
     ASSERT(veh->GetBase()->GetTypeId() == TYPEID_UNIT);
     ASSERT(passenger);
+#ifdef ELUNA
+    sHookMgr->OnAddPassenger(veh, passenger, seatId);
+#endif
 
     GET_SCRIPT(VehicleScript, veh->GetBase()->ToCreature()->GetScriptId(), tmpscript);
     tmpscript->OnAddPassenger(veh, passenger, seatId);
@@ -1196,6 +1211,9 @@ void ScriptMgr::OnRemovePassenger(Vehicle* veh, Unit* passenger)
     ASSERT(veh);
     ASSERT(veh->GetBase()->GetTypeId() == TYPEID_UNIT);
     ASSERT(passenger);
+#ifdef ELUNA
+    sHookMgr->OnRemovePassenger(veh, passenger);
+#endif
 
     GET_SCRIPT(VehicleScript, veh->GetBase()->ToCreature()->GetScriptId(), tmpscript);
     tmpscript->OnRemovePassenger(veh, passenger);
