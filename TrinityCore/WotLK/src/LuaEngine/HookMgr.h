@@ -84,10 +84,10 @@ enum ServerEvents
     WEATHER_EVENT_ON_CHANGE                 =     25,       // (event, weather, state, grade)
 
     // Auction house
-    AUCTION_EVENT_ON_ADD                    =     26,       // Not Implemented
-    AUCTION_EVENT_ON_REMOVE                 =     27,       // Not Implemented
-    AUCTION_EVENT_ON_SUCCESSFUL             =     28,       // Not Implemented
-    AUCTION_EVENT_ON_EXPIRE                 =     29,       // Not Implemented
+    AUCTION_EVENT_ON_ADD                    =     26,       // (event, AHObject)
+    AUCTION_EVENT_ON_REMOVE                 =     27,       // (event, AHObject)
+    AUCTION_EVENT_ON_SUCCESSFUL             =     28,       // (event, AHObject)
+    AUCTION_EVENT_ON_EXPIRE                 =     29,       // (event, AHObject)
 
     SERVER_EVENT_COUNT
 };
