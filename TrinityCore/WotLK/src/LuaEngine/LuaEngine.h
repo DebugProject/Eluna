@@ -509,7 +509,6 @@ class Eluna
         Player* CHECK_PLAYER(lua_State* L, int narg);
         Creature* CHECK_CREATURE(lua_State* L, int narg);
         GameObject* CHECK_GAMEOBJECT(lua_State* L, int narg);
-        Vehicle* CHECK_VEHICLE(lua_State* L, int narg);
         Corpse* CHECK_CORPSE(lua_State* L, int narg);
         Quest* CHECK_QUEST(lua_State* L, int narg);
         Spell* CHECK_SPELL(lua_State* L, int narg);

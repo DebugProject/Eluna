@@ -426,11 +426,6 @@ Corpse* Eluna::CHECK_CORPSE(lua_State* L, int narg)
     return obj->ToCorpse();
 }
 
-Vehicle* Eluna::CHECK_VEHICLE(lua_State* L, int narg)
-{
-    return ElunaTemplate<Vehicle>::check(L, narg);
-}
-
 WorldPacket* Eluna::CHECK_PACKET(lua_State* L, int narg)
 {
     return ElunaTemplate<WorldPacket>::check(L, narg);
