@@ -1090,6 +1090,54 @@ void HookMgr::OnRemovePassenger(Transport* transport, Player* player)
 void HookMgr::OnRelocate(Transport* transport, uint32 waypointId, uint32 mapId, float x, float y, float z)
 {
 }
+// Auction House
+void HookMgr::OnAdd(AuctionHouseObject* ah)
+{
+    for (std::vector<int>::const_iterator itr = sEluna->ServerEventBindings[AUCTION_EVENT_ON_ADD].begin();
+        itr != sEluna->ServerEventBindings[AUCTION_EVENT_ON_ADD].end(); ++itr)
+    {
+        sEluna->BeginCall((*itr));
+        sEluna->Push(sEluna->L, AUCTION_EVENT_ON_ADD);
+        sEluna->Push(sEluna->L, (ah));
+        sEluna->ExecuteCall(2, 0);
+    }
+}
+
+void HookMgr::OnRemove(AuctionHouseObject* ah)
+{
+    for (std::vector<int>::const_iterator itr = sEluna->ServerEventBindings[AUCTION_EVENT_ON_REMOVE].begin();
+        itr != sEluna->ServerEventBindings[AUCTION_EVENT_ON_REMOVE].end(); ++itr)
+    {
+        sEluna->BeginCall((*itr));
+        sEluna->Push(sEluna->L, AUCTION_EVENT_ON_REMOVE);
+        sEluna->Push(sEluna->L, (ah));
+        sEluna->ExecuteCall(2, 0);
+    }
+}
+
+void HookMgr::OnSuccessful(AuctionHouseObject* ah)
+{
+    for (std::vector<int>::const_iterator itr = sEluna->ServerEventBindings[AUCTION_EVENT_ON_SUCCESSFUL].begin();
+        itr != sEluna->ServerEventBindings[AUCTION_EVENT_ON_SUCCESSFUL].end(); ++itr)
+    {
+        sEluna->BeginCall((*itr));
+        sEluna->Push(sEluna->L, AUCTION_EVENT_ON_SUCCESSFUL);
+        sEluna->Push(sEluna->L, (ah));
+        sEluna->ExecuteCall(2, 0);
+    }
+}
+
+void HookMgr::OnExpire(AuctionHouseObject* ah)
+{
+    for (std::vector<int>::const_iterator itr = sEluna->ServerEventBindings[AUCTION_EVENT_ON_EXPIRE].begin();
+        itr != sEluna->ServerEventBindings[AUCTION_EVENT_ON_EXPIRE].end(); ++itr)
+    {
+        sEluna->BeginCall((*itr));
+        sEluna->Push(sEluna->L, AUCTION_EVENT_ON_EXPIRE);
+        sEluna->Push(sEluna->L, (ah));
+        sEluna->ExecuteCall(2, 0);
+    }
+}
 
 struct HookMgr::ElunaWorldAI : public WorldScript
 {

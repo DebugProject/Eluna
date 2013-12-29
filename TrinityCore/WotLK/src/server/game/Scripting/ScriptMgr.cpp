@@ -1104,6 +1104,9 @@ void ScriptMgr::OnAuctionAdd(AuctionHouseObject* ah, AuctionEntry* entry)
 {
     ASSERT(ah);
     ASSERT(entry);
+#ifdef ELUNA
+    sHookMgr->OnAdd(ah);
+#endif
 
     FOREACH_SCRIPT(AuctionHouseScript)->OnAuctionAdd(ah, entry);
 }
@@ -1112,6 +1115,9 @@ void ScriptMgr::OnAuctionRemove(AuctionHouseObject* ah, AuctionEntry* entry)
 {
     ASSERT(ah);
     ASSERT(entry);
+#ifdef ELUNA
+    sHookMgr->OnRemove(ah);
+#endif
 
     FOREACH_SCRIPT(AuctionHouseScript)->OnAuctionRemove(ah, entry);
 }
@@ -1120,6 +1126,9 @@ void ScriptMgr::OnAuctionSuccessful(AuctionHouseObject* ah, AuctionEntry* entry)
 {
     ASSERT(ah);
     ASSERT(entry);
+#ifdef ELUNA
+    sHookMgr->OnSuccessful(ah);
+#endif
 
     FOREACH_SCRIPT(AuctionHouseScript)->OnAuctionSuccessful(ah, entry);
 }
@@ -1128,6 +1137,9 @@ void ScriptMgr::OnAuctionExpire(AuctionHouseObject* ah, AuctionEntry* entry)
 {
     ASSERT(ah);
     ASSERT(entry);
+#ifdef ELUNA
+    sHookMgr->OnExpire(ah);
+#endif
 
     FOREACH_SCRIPT(AuctionHouseScript)->OnAuctionExpire(ah, entry);
 }

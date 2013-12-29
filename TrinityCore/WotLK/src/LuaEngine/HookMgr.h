@@ -86,7 +86,7 @@ enum ServerEvents
     // Auction house
     AUCTION_EVENT_ON_ADD                    =     26,       // Not Implemented
     AUCTION_EVENT_ON_REMOVE                 =     27,       // Not Implemented
-    AUCTION_EVENT_ON_SUCCESFUL              =     28,       // Not Implemented
+    AUCTION_EVENT_ON_SUCCESSFUL             =     28,       // Not Implemented
     AUCTION_EVENT_ON_EXPIRE                 =     29,       // Not Implemented
 
     SERVER_EVENT_COUNT
@@ -351,9 +351,14 @@ struct HookMgr
     bool OnAreaTrigger(Player* pPlayer, AreaTriggerEntry const* pTrigger);
     /* Weather */
     void OnChange(Weather* weather, WeatherState state, float grade);
-    // condition
+    /* Auction House */
+    void OnAdd(AuctionHouseObject* ah);
+    void OnRemove(AuctionHouseObject* ah);
+    void OnSuccessful(AuctionHouseObject* ah);
+    void OnExpire(AuctionHouseObject* ah);
+    /* Condition */
     bool OnConditionCheck(Condition* condition, ConditionSourceInfo& sourceInfo) { return false; }; // TODO ?
-    // transport
+    /* Transport */
     void OnAddPassenger(Transport* transport, Player* player);
     void OnAddCreaturePassenger(Transport* transport, Creature* creature);
     void OnRemovePassenger(Transport* transport, Player* player);
