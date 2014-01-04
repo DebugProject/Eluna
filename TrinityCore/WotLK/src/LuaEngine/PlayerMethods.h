@@ -84,15 +84,6 @@ namespace LuaPlayer
         return 0;
     }
 
-    int HasAura(lua_State* L, Player* player)
-    {
-        uint32 spell = luaL_checkunsigned(L, 1);
-        WorldObject* caster = sEluna->CHECK_WORLDOBJECT(L, 2);
-
-        sEluna->Push(L, player->HasAura(spell, caster ? caster->GetGUIDLow() : 0));
-        return 1;
-    }
-
     int IsARecruiter(lua_State* L, Player* player)
     {
         sEluna->Push(L, player->GetSession()->IsARecruiter() || (player->GetSession()->GetRecruiterId() != 0));
