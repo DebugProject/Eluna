@@ -1223,11 +1223,11 @@ namespace LuaUnit
         return 1;
     }
 
-    int HasAura(lua_State* L, Player* player)
+    int HasAura(lua_State* L, Unit* unit)
     {
         uint32 spell = luaL_checkunsigned(L, 1);
 
-        sEluna->Push(L, player->HasAura(spell));
+        sEluna->Push(L, unit->HasAura(spell));
         return 1;
     }
 
