@@ -9,7 +9,9 @@ We want to be the major Lua source for World of Warcraft emulation. If you need 
 
 ## MORE INFORMATION
 
-If you'd like to use Eluna with MaNGOS, look further down this README for the links to it. However, if you prefer Eluna with TrinityCore, you can download and keep updated with our standalone source here, or go to [Eluna WotLK TC] (https://github.com/ElunaLuaEngine/Eluna-TC-Wotlk) for our forked source of TrinityCore with Eluna in it.
+This is the MAIN Eluna information repo. Instead of getting rid of it to confuse everyone, we just decided to make it the information center. The standalone source no longer exists. We had recent changes that allowed us to move TrinityCore sources to a forked repo (only Cataclysm seeing WotLK was already added). You can find those in the links below, along with the MaNGOS links if you prefer MaNGOS.
+
+The reason why we changed is because we agreed to alter TrinityCore's source due to most of their class members being private. That being said, enjoy Eluna Lua Engine!
 
 ## SOCIAL
 
@@ -26,27 +28,19 @@ Follow us on our [Twitter] (https://twitter.com/EmuDevs) page to view the latest
 
 [Eluna Scripts] (https://github.com/ElunaLuaEngine/Scripts)
 
-[Setup Video] (http://www.youtube.com/watch?v=8wGHf7FbhSw)
-
 [MaNGOS] (http://getmangos.com/)
 
 [TrinityCore] (http://www.trinitycore.org/)
 
 ## Eluna MaNGOS LINKS
-
- WITHOUT SD2
  
-[Eluna Classic MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreClassic)
 [Eluna TBC MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreTbc)
 [Eluna WotLK MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreWotlk)
-[Eluna Cataclysm MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreCata)
 
- WITH SD2
- 
-[Eluna Classic MaNGOS] (https://github.com/eluna-dev-mangos/ElunaSD2Classic)
-[Eluna TBC MaNGOS] (https://github.com/eluna-dev-mangos/ElunaSD2Tbc)
-[Eluna WotLK MaNGOS] (https://github.com/eluna-dev-mangos/ElunaSD2Wotlk)
-[Eluna Cataclysm MaNGOS] (https://github.com/eluna-dev-mangos/ElunaSD2Cata)
+## Eluna TrinityCore LINKS
+
+[Eluna WotLK TrinityCore] (https://github.com/ElunaLuaEngine/Eluna-TC-Wotlk)
+[Eluna Cataclysm TrinityCore] (https://github.com/ElunaLuaEngine/Eluna-TC-Cata)
 
 ## SUPPORT
 
@@ -66,7 +60,7 @@ If you're having trouble, post in Eluna's support here: [Eluna Support Forum] (h
 [TrinityCore] (https://github.com/TrinityCore/TrinityCore) : WotLK/Cataclysm
 		
 ## IN DEVELOPMENT
-[MaNGOS] (http://getmangos.com/) : [WotLK] (https://github.com/mangostwo/server)
+[MaNGOS] (http://getmangos.com/) : [WotLK] (https://github.com/mangostwo/server) : [TBC] (https://github.com/mangosone/server)
 
 ## SPECIAL THANKS TO
 
