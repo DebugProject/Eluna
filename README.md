@@ -51,8 +51,6 @@ If you're having trouble, post in Eluna's support here: [Eluna Support Forum] (h
 * Tommy (Easelm)
 * Foereaper
 * Rochet2
-* Jameyboor
-* Hamar (Hammer)
 * [MaNGOS Team] (http://getmangos.com/)
 
 ## SUPPORTED EMULATORS
@@ -60,7 +58,9 @@ If you're having trouble, post in Eluna's support here: [Eluna Support Forum] (h
 [TrinityCore] (https://github.com/TrinityCore/TrinityCore) : WotLK/Cataclysm
 		
 ## IN DEVELOPMENT
-[MaNGOS] (http://getmangos.com/) : [WotLK] (https://github.com/mangostwo/server) : [TBC] (https://github.com/mangosone/server)
+[MaNGOS] (http://getmangos.com/) : 
+[WotLK] (https://github.com/mangostwo/server) : 
+[TBC] (https://github.com/mangosone/server)
 
 ## SPECIAL THANKS TO
 
