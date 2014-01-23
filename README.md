@@ -19,28 +19,23 @@ The reason why we changed is because we agreed to alter TrinityCore's source due
 
 Follow us on our [Twitter] (https://twitter.com/EmuDevs) page to view the latest news about EmuDevs and what's going on with Eluna.
 
-
-## LINKS
-
-[Eluna Wiki](http://wiki.emudevs.com/doku.php?id=eluna)
-
-[Eluna Support Forum](http://emudevs.com)
-
-[Eluna Scripts] (https://github.com/ElunaLuaEngine/Scripts)
-
-[MaNGOS] (http://getmangos.com/)
-
-[TrinityCore] (http://www.trinitycore.org/)
-
 ## Eluna MaNGOS LINKS
  
-[Eluna TBC MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreTbc)
-[Eluna WotLK MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreWotlk)
+[![Build Status](https://travis-ci.org/eluna-dev-mangos/ElunaCoreTbc.png?branch=master)](https://travis-ci.org/eluna-dev-mangos/ElunaCoreTbc) [Eluna TBC MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreTbc)<br />
+[![Build Status](https://travis-ci.org/eluna-dev-mangos/ElunaCoreWotlk.png?branch=master)](https://travis-ci.org/eluna-dev-mangos/ElunaCoreTbc) [Eluna WotLK MaNGOS] (https://github.com/eluna-dev-mangos/ElunaCoreWotlk)
 
 ## Eluna TrinityCore LINKS
 
-[Eluna WotLK TrinityCore] (https://github.com/ElunaLuaEngine/Eluna-TC-Wotlk)
-[Eluna Cataclysm TrinityCore] (https://github.com/ElunaLuaEngine/Eluna-TC-Cata)
+[![Build Status](https://travis-ci.org/ElunaLuaEngine/Eluna-TC-Wotlk.png?branch=master)](https://travis-ci.org/ElunaLuaEngine/Eluna-TC-Wotlk) [Eluna WotLK TrinityCore] (https://github.com/ElunaLuaEngine/Eluna-TC-Wotlk)<br />
+[![Build Status](https://travis-ci.org/ElunaLuaEngine/Eluna-TC-Cata.png?branch=master)](https://travis-ci.org/ElunaLuaEngine/Eluna-TC-Wotlk) [Eluna Cataclysm TrinityCore] (https://github.com/ElunaLuaEngine/Eluna-TC-Cata)
+
+## LINKS
+
+* [Eluna Wiki](http://wiki.emudevs.com/doku.php?id=eluna)
+* [Eluna Scripts] (https://github.com/ElunaLuaEngine/Scripts)
+* [Eluna Support Forum](http://emudevs.com)
+* [cMaNGOS] (http://cmangos.net/)
+* [TrinityCore] (http://www.trinitycore.org/)
 
 ## SUPPORT
 
@@ -51,16 +46,8 @@ If you're having trouble, post in Eluna's support here: [Eluna Support Forum] (h
 * Tommy (Easelm)
 * Foereaper
 * Rochet2
-* [MaNGOS Team] (http://getmangos.com/)
-
-## SUPPORTED EMULATORS
-
-[TrinityCore] (https://github.com/TrinityCore/TrinityCore) : WotLK/Cataclysm
-		
-## IN DEVELOPMENT
-[MaNGOS] (http://getmangos.com/) : 
-[WotLK] (https://github.com/mangostwo/server) : 
-[TBC] (https://github.com/mangosone/server)
+* Salja
+* [MaNGOS Team] (http://cmangos.net/)
 
 ## SPECIAL THANKS TO
 
